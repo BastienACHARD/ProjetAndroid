@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">DemoOSM</string>
+    <string name="app_name">Signalify</string>
+    <string name="app_name_up">SIGNALIFY</string>
+    <string name="add">Ajouter un Incident</string>
+    <string name="title_activity_splash_screen">SplashScreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
