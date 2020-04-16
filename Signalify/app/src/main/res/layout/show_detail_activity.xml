@@ -3,10 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    app:layout_constraintBottom_toTopOf="parent">
     
 
         <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tablayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#e8f9f8"
@@ -21,13 +23,14 @@
                 android:id="@+id/messageTab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Message"
+                android:text="Photo"
                 />
         </com.google.android.material.tabs.TabLayout>
         
 
     
     <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewpage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
