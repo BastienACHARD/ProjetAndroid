@@ -35,6 +35,8 @@ public class ShowDetailActivity extends AppCompatActivity {
         viewPage = (ViewPager)(findViewById(R.id.viewpage));
         pageAdapter=new PageAdapter(getSupportFragmentManager(),this.tabLayOut.getTabCount());
         viewPage.setAdapter(pageAdapter);
+        getSupportActionBar().setTitle("Détails de l'incident");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
       //  listview.setAdapter(custom);
