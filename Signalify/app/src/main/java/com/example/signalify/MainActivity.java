@@ -1,9 +1,12 @@
 package com.example.signalify;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,6 +28,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private MapView map;
+    private ImageButton btnParam;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +39,6 @@ public class MainActivity extends AppCompatActivity {
         //load/initialize the osmdroid configuration, this can be done
         Configuration.getInstance().load(   getApplicationContext(),
                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext()) );
-        //setting this before the layout is inflated is a good idea
-        //it 'should' ensure that the map has a writable location for the map cache, even without permissions
-        //if no tiles are displayed, you can try overriding the cache path using Configuration.getInstance().setCachePath
-        //see also StorageUtils
-        //note, the load method also sets the HTTP User Agent to your application's package name, abusing osm's tile servers will get you banned based on this string
 
         //inflate and create the map
         setContentView(R.layout.activity_main);
@@ -95,6 +94,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnParam= findViewById(R.id.btnParam);
+        btnParam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(),ParametersActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
     }
 
