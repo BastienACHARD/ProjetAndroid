@@ -1,5 +1,6 @@
 package com.example.signalify;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         OverlayItem home = new OverlayItem("F. Rallo", "nos bureaux", new GeoPoint(43.65020,7.00517));
         Drawable m = home.getMarker(0);
 
+
         items.add(home); // Lat/Lon decimal degrees
         items.add(new OverlayItem("Resto", "chez babar", new GeoPoint(43.64950,7.00517))); // Lat/Lon decimal degrees
 
@@ -73,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
                         //do something
+                        Intent i=new Intent(MainActivity.this,ShowDetailActivity.class);
+                        startActivity(i);
                         return true;
                     }
                     @Override
