@@ -28,7 +28,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private MapView map;
-    private ImageButton btnParam;
+    private ImageView btnParam;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

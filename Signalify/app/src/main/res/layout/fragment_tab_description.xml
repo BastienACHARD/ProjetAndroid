@@ -5,39 +5,42 @@
     android:layout_height="match_parent"
     tools:context=".tabDescription"
     >
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp">
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:text="@string/Text"/>
+                <Button
+                    android:id="@+id/buttonAjout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:layout_weight="2"
+                    android:background="@drawable/custom_button1"
+                    android:text="Ajouter un commentaire"
+                    android:textColor="#000000" />
 
+                <ImageView
+                    android:id="@+id/appel"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom|center"
+                    android:layout_weight="3"
+                    android:src="@drawable/tel" />
+
+        </LinearLayout>
+</ScrollView>
     <!-- TODO: Update blank fragment layout -->
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginTop="40dp">
-
-    <TextView
-
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="426dp"
-        android:layout_marginTop="40dp"
-        android:text="A votre attention s’il vous plait. Un accident grave vient de se produire tout à l’heure.
-         Il y a 7 blessés graves et 19 blessés superficiellement, dont 5 femmes ,6 enfants et 15 hommes. Ca fait très mal voici quelques photos des
-         dégâts occasionnés par l'accident"/>
-    <Button
-        android:id="@+id/buttonAjout"
-        android:layout_width="264dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="75dp"
-        android:layout_marginTop="40dp"
-        android:textColor="#000000"
-        android:background="@drawable/custom_button1"
-        android:text="Ajouter un commentaire" />
-
-    <ImageView
-        android:id="@+id/appel"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="end"
-        android:src="@drawable/tel"/>
-</LinearLayout>
 </FrameLayout>

@@ -18,7 +18,7 @@ import android.widget.ListView;
 public class tabPhoto extends Fragment {
     View root;
 
-    int[] images={R.drawable.accident1,R.drawable.accident2,R.drawable.accident3,R.drawable.accident4,R.drawable.accident5,R.drawable.accident6};
+    int[] images={R.drawable.accident1,R.drawable.accident3,R.drawable.accident6};
     public tabPhoto() {
         // Required empty public constructor
     }
