@@ -46,10 +46,9 @@ public class ShowDetailActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                  viewPage.setCurrentItem(tab.getPosition());
-
                  if(tab.getPosition()==0) {
 
-                     pageAdapter.notifyDataSetChanged();
+                   //  pageAdapter.notifyDataSetChanged();
                  }
                 if(tab.getPosition()==1) {
 
@@ -68,7 +67,7 @@ public class ShowDetailActivity extends AppCompatActivity {
             }
         });
 
-        this.viewPage.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(this.tabLayOut));
+      //  this.viewPage.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(this.tabLayOut));
 
     }
 
