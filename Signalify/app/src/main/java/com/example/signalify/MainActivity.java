@@ -73,8 +73,9 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
                         //do something
-                        Intent i=new Intent(MainActivity.this,ShowDetailActivity.class);
-                        startActivity(i);
+                        Intent intent=new Intent(getApplicationContext(),ShowDetailActivity.class);
+                        intent.putExtra("code",index);
+                        startActivity(intent);
                         return true;
                     }
                     @Override

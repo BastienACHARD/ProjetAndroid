@@ -1,6 +1,8 @@
 package com.example.signalify;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -33,7 +35,9 @@ public class ShowDetailActivity extends AppCompatActivity {
         tabMessage=(TabItem)(findViewById(R.id.messageTab));
         tabDescription=(TabItem)(findViewById(R.id.descriptionTab));
         viewPage = (ViewPager)(findViewById(R.id.viewpage));
-        pageAdapter=new PageAdapter(getSupportFragmentManager(),this.tabLayOut.getTabCount());
+        Intent intent=getIntent();
+        int index=intent.getIntExtra("code", 0);
+        pageAdapter=new PageAdapter(getSupportFragmentManager(),this.tabLayOut.getTabCount(), index);
         viewPage.setAdapter(pageAdapter);
         getSupportActionBar().setTitle("Détails de l'incident");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
