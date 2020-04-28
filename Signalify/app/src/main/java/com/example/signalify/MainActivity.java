@@ -2,6 +2,8 @@ package com.example.signalify;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.location.LocationListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -21,6 +23,8 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
 import org.osmdroid.views.overlay.OverlayItem;
+import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
 // essai de suivre le tuto : https://github.com/osmdroid/osmdroid/wiki/How-to-use-the-osmdroid-library
@@ -38,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         //load/initialize the osmdroid configuration, this can be done
-        Configuration.getInstance().load(   getApplicationContext(),
+        Configuration.getInstance().load(getApplicationContext(),
                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext()) );
 
         //inflate and create the map
@@ -54,14 +58,17 @@ public class MainActivity extends AppCompatActivity {
         GeoPoint startPoint = new GeoPoint(43.65020, 7.00517);
         mapController.setCenter(startPoint);
 
-
+        MyLocationNewOverlay mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getApplicationContext()), map);
+        mLocationOverlay.enableMyLocation();
+        map.setMultiTouchControls(true);
+        map.getOverlays().add(mLocationOverlay);
 
 
         //create a new item to draw on the map
         //your items
         ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();
         OverlayItem home = new OverlayItem("F. Rallo", "nos bureaux", new GeoPoint(43.65020,7.00517));
-        Drawable m = home.getMarker(0);
+        // Drawable m = home.getMarker(0);
 
 
         items.add(home); // Lat/Lon decimal degrees
@@ -88,8 +95,7 @@ public class MainActivity extends AppCompatActivity {
         map.getOverlays().add(mOverlay);
         getSupportActionBar().hide();
 
-        FloatingActionButton floatingActionButton =
-                (FloatingActionButton) findViewById(R.id.floating_action_button);
+        FloatingActionButton floatingActionButton = findViewById(R.id.floating_action_button);
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override

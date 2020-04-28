@@ -35,7 +35,7 @@
                     android:id="@+id/appel"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_gravity="bottom|center"
+                    android:layout_gravity="bottom|end"
                     android:layout_weight="3"
                     android:src="@drawable/tel" />
 
