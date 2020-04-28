@@ -12,28 +12,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="@dimen/frag_description_margin">
+        android:layout_marginTop="20dp">
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/frag_description_margin"
-                android:textSize="@dimen/txt_description_size"
+                android:layout_margin="20dp"
+                android:layout_weight="1"
+                android:textSize="20dp"
                 android:text="@string/Text"/>
                 <Button
                     android:id="@+id/buttonAjout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/frag_description_margin"
+                    android:layout_margin="20dp"
+                    android:layout_weight="2"
                     android:background="@drawable/custom_button1"
                     android:text="Ajouter un commentaire"
                     android:textColor="#000000" />
 
                 <ImageView
                     android:id="@+id/appel"
-                    android:layout_width="@dimen/btn_call_width"
-                    android:layout_height="@dimen/btn_call_height"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="bottom|center"
+                    android:layout_weight="3"
                     android:src="@drawable/tel" />
 
         </LinearLayout>
