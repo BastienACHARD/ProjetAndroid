@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "501425395872",
+    "firebase_url": "https://projetandoid-ihm.firebaseio.com",
+    "project_id": "projetandoid-ihm",
+    "storage_bucket": "projetandoid-ihm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:501425395872:android:e1a7d472c3fe11f49511c5",
+        "android_client_info": {
+          "package_name": "com.example.signalify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "501425395872-n01pddguhfk4ghg2limn026m5emqq9do.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.signalify",
+            "certificate_hash": "32c3828b11cb15c03db9ef6c0e781428a9e14a35"
+          }
+        },
+        {
+          "client_id": "501425395872-132etsf2kjl2st2f8umn5kj81cl8g9ku.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbigLpLVJu_5bCDkCRv1C3nfkndSd9qLs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "501425395872-132etsf2kjl2st2f8umn5kj81cl8g9ku.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
