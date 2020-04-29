@@ -19,6 +19,7 @@ import android.widget.Toast;
  */
 public class tabDescription extends Fragment {
 
+   int valeur = 0;
     public tabDescription() {
 
         // Required empty public constructor
@@ -30,7 +31,7 @@ public class tabDescription extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-
+        if(getArguments()!=null) valeur= getArguments().getInt("overlay");
         View root =inflater.inflate(R.layout.fragment_tab_description, container, false);
         ((ImageView)root.findViewById(R.id.appel)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,7 +44,7 @@ public class tabDescription extends Fragment {
         ( ( Button) root.findViewById(R.id.buttonAjout)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast toast=Toast.makeText(getContext(),"A faire bientot",Toast.LENGTH_LONG);
+                Toast toast=Toast.makeText(getContext(),"A faire bientot ++++"+valeur,Toast.LENGTH_LONG);
                 toast.show();
             }
         });

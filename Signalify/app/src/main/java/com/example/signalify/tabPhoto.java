@@ -17,6 +17,7 @@ import android.widget.ListView;
  */
 public class tabPhoto extends Fragment {
     View root;
+    int index=0;
 
     int[] images={R.drawable.accident1,R.drawable.accident3,R.drawable.accident6};
     public tabPhoto() {
