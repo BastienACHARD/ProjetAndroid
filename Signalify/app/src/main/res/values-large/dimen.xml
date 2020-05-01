@@ -16,10 +16,10 @@
     <dimen name="btn_back_para_width">74dp</dimen>
     <dimen name="btn_back_para_marginRight">20dp</dimen>
     <dimen name="align_param_icon">15dp</dimen>
-    <dimen name="txt_param_size">68dp</dimen>
+    <dimen name="txt_param_size">42dp</dimen>
     <dimen name="linearlayout_padding">40dp</dimen>
-    <dimen name="margin_size">30dp</dimen>
-    <dimen name="txt_swich_size">40dp</dimen>
+    <dimen name="margin_size">25dp</dimen>
+    <dimen name="txt_swich_size">35dp</dimen>
     <dimen name="label_under_txt_param_size">46dp</dimen>
 
             <!-- fragment tab photo -->

@@ -3,24 +3,24 @@
 
             <!-- activity main -->
 
-    <dimen name="linearlayout_Search_view_size">60dp</dimen>
+    <dimen name="linearlayout_Search_view_size">70dp</dimen>
     <dimen name="btn_para_margin_top">10dp</dimen>
-    <dimen name="search_view_width">320dp</dimen>
-    <dimen name="btn_para_width">60dp</dimen>
-    <dimen name="btn_para_height">53dp</dimen>
+    <dimen name="search_view_width">330dp</dimen>
+    <dimen name="btn_para_width">62dp</dimen>
+    <dimen name="btn_para_height">58dp</dimen>
     <dimen name="btn_add_height">60dp</dimen>
     <dimen name="btn_add_width">78dp</dimen>
 
             <!-- activity parameters -->
     <dimen name="btn_back_para_height">76dp</dimen>
     <dimen name="btn_back_para_width">74dp</dimen>
-    <dimen name="btn_back_para_marginRight">20dp</dimen>
-    <dimen name="margin_txt_sous_param_size">25dp</dimen>
+    <dimen name="btn_back_para_marginRight">150dp</dimen>
     <dimen name="align_param_icon">20dp</dimen>
-    <dimen name="txt_param_size">45dp</dimen>
-    <dimen name="linearlayout_padding">20dp</dimen>
-    <dimen name="margin_size">20dp</dimen>
-    <dimen name="txt_swich_size">25dp</dimen>
+    <dimen name="txt_param_size">62dp</dimen>
+    <dimen name="linearlayout_padding">10dp</dimen>
+    <dimen name="margin_size">25dp</dimen>
+    <dimen name="margin_txt_sous_param_size">38dp</dimen>
+    <dimen name="txt_swich_size">40dp</dimen>
     <dimen name="label_under_txt_param_size">26dp</dimen>
     <dimen name="img_accident_size">20dp</dimen>
     <dimen name="btn_add_comment_size">20dp</dimen>
