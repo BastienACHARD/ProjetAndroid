@@ -1,13 +1,20 @@
 package com.example.signalify;
 
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.example.signalify.models.Accident;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -21,18 +28,21 @@ public class AddAccident extends AppCompatActivity {
     Accident accident;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String type = "route";
-    GeoPoint location = new GeoPoint(11,11);
+    GeoPoint location = new GeoPoint(11, 11);
     ArrayList<String> descriptions = new ArrayList<>();
     ArrayList<String> images = new ArrayList<>();
+    int id = 0;
 
-    public AddAccident(){
+
+    public AddAccident() {
 
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_accident);
+
 
         Button valid = (Button) findViewById(R.id.valid);
         Button cancel = (Button) findViewById(R.id.cancel);
@@ -47,16 +57,19 @@ public class AddAccident extends AppCompatActivity {
             public void onClick(View view) {
                 setAccident(type, location, descriptions, images);
                 addAccidentDataBase(accident);
-                Intent intent=new Intent(getApplicationContext(), MainActivity.class);
+                    sendNotificationChannel("","Un nouvent accident a été déclaré",Notifications.CHANNEL_3_ID, NotificationCompat.PRIORITY_HIGH);
+
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
+
             }
         });
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -65,19 +78,44 @@ public class AddAccident extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
     }
 
-    public void setAccident(String type, GeoPoint location, ArrayList<String> description, ArrayList<String> image){
+    public void setAccident(String type, GeoPoint location, ArrayList<String> description, ArrayList<String> image) {
         accident = new Accident(type, location, description, image);
     }
 
-    public void addAccidentDataBase(Accident accident){
+    public void addAccidentDataBase(Accident accident) {
         db.collection("Accidents").add(accident);
     }
+
+    private void sendNotificationChannel(String title, String message, String channelId, int priority) {
+        Intent activityIntent = new Intent(this,AddAccident.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this,
+                0, activityIntent, 0);
+        Bitmap picture = BitmapFactory.decodeResource(getResources(), R.drawable.accident1);
+
+
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(getApplicationContext(), channelId)
+                .setContentTitle(title)
+                .setContentText( message)
+                .setPriority(priority)
+                .setStyle(new NotificationCompat.BigPictureStyle()
+                        .bigPicture(picture)
+                        .bigLargeIcon(null))
+                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setContentIntent(contentIntent)
+                .setAutoCancel(true)
+                .setSmallIcon(R.drawable.logoaccident)
+                .setPriority(priority)
+                .setOnlyAlertOnce(true);
+
+        NotificationManagerCompat.from(this).notify(++id, notification.build());
+    }
+
 
 }

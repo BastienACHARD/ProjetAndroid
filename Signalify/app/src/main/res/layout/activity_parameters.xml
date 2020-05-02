@@ -73,5 +73,4 @@
                 android:textSize="@dimen/txt_swich_size"
                 android:layout_margin="@dimen/margin_size"/>
 
-
 </LinearLayout>
