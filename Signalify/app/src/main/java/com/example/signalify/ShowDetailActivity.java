@@ -2,19 +2,13 @@ package com.example.signalify;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
+import android.widget.GridView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 public class ShowDetailActivity extends AppCompatActivity {
@@ -23,14 +17,14 @@ public class ShowDetailActivity extends AppCompatActivity {
     private TabItem tabMessage, tabDescription;
     private ViewPager viewPage;
     public PageAdapter pageAdapter;
-    private ListView listview;
+    private GridView gridView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_detail_activity);
-        this.listview=(ListView) (findViewById(R.id.listView)) ;
+        this.gridView =(GridView) (findViewById(R.id.gridView)) ;
         this.tabLayOut=(TabLayout)(findViewById(R.id.tablayout));
         tabMessage=(TabItem)(findViewById(R.id.messageTab));
         tabDescription=(TabItem)(findViewById(R.id.descriptionTab));

@@ -28,7 +28,9 @@
 
             <!-- image solo -->
 
-    <dimen name="img_height">270dp</dimen>
+    <dimen name="img_height">250dp</dimen>
+    <dimen name="img_width">400dp</dimen>
+    <dimen name="item_width">400dp</dimen>
 
              <!-- Fragment description -->
     <dimen name="magin">20dp</dimen>

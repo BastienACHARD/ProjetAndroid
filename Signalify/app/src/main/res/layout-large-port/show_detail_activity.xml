@@ -15,12 +15,12 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tablayout"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="80dp"
             android:background="#e8f9f8"
             app:tabTextColor="#4ea8fc">
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/descriptionTab"
-                android:layout_width="wrap_content"
+                android:layout_width="50pt"
                 android:layout_height="wrap_content"
                 android:text="Description"
                 />
