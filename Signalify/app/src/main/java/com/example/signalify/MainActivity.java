@@ -36,9 +36,14 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private MapView map;
+    public static boolean bul = true;
     private ImageView btnParam;
     private SearchView sv;
     private View rootView;
+
+    public static void setBul(boolean bul) {
+        MainActivity.bul = bul;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
