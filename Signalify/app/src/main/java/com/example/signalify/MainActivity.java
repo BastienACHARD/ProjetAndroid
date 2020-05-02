@@ -1,14 +1,17 @@
 package com.example.signalify;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -40,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView btnParam;
     private SearchView sv;
     private View rootView;
+    public static boolean radarState,accidentState,chantierState,embouteillageState,imageNotifChoice;
 
     public static void setBul(boolean bul) {
         MainActivity.bul = bul;
@@ -101,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+        loadSwitchsState();
 
         mOverlay.setFocusItemsOnTap(true);
         map.getOverlays().add(mOverlay);
@@ -142,5 +147,12 @@ public class MainActivity extends AppCompatActivity {
         map.onPause();
     }
 
-
+    public void loadSwitchsState(){
+        ParametersActivity param=new ParametersActivity();
+        SharedPreferences sharedPreferences = getSharedPreferences(param.SHARED_PREFERS,MODE_PRIVATE);
+        radarState=sharedPreferences.getBoolean(param.SRADAR,true);
+        accidentState = sharedPreferences.getBoolean(param.SACCIDENT, true);
+        embouteillageState = sharedPreferences.getBoolean(param.SEMBOUITEILLAGE,true);
+        chantierState = sharedPreferences.getBoolean(param.SCHANTIER,true);
+    }
 }

@@ -28,13 +28,15 @@
 
             <!-- image solo -->
 
-    <dimen name="img_height">270dp</dimen>
+    <dimen name="img_height">400dp</dimen>
+    <dimen name="img_width">800dp</dimen>
+    <dimen name="item_width">800dp</dimen>
 
              <!-- Fragment description -->
-    <dimen name="magin">20dp</dimen>
-    <dimen name="txt_description_size">20dp</dimen>
-    <dimen name="frag_description_margin">20dp</dimen>
-    <dimen name="btn_call_height">40dp</dimen>
-    <dimen name="btn_call_width">40dp</dimen>
+    <dimen name="magin">40dp</dimen>
+    <dimen name="txt_description_size">40dp</dimen>
+    <dimen name="frag_description_margin">40dp</dimen>
+    <dimen name="btn_call_height">50dp</dimen>
+    <dimen name="btn_call_width">50dp</dimen>
 
 </resources>

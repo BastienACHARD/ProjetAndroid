@@ -17,6 +17,7 @@
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textAlignment="center"
                 android:layout_margin="@dimen/frag_description_margin"
                 android:textSize="@dimen/txt_description_size"
                 android:text="@string/Text"/>

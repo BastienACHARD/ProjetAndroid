@@ -17,38 +17,29 @@
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_size"
                 android:textAlignment="center"
-                android:layout_weight="3"
+                android:layout_margin="30dp"
+                android:layout_weight="1"
                 android:textSize="@dimen/txt_description_size"
                 android:text="@string/Text"/>
-
-               <LinearLayout
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_gravity="center"
-                   android:orientation="horizontal">
-
                 <Button
                     android:id="@+id/buttonAjout"
-                    android:layout_width="600dp"
-                    android:layout_height="50dp"
-                    android:layout_margin="@dimen/margin_size"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="60dp"
+                    android:layout_weight="5"
+                    android:textSize="20dp"
                     android:background="@drawable/custom_button1"
                     android:text="Ajouter un commentaire"
-                    android:textSize="25dp"
                     android:textColor="#000000" />
 
-                   <ImageView
-                       android:id="@+id/appel"
-                       android:layout_width="@dimen/btn_call_width"
-                       android:layout_height="60dp"
-                       android:layout_gravity="bottom|center"
-                       android:layout_marginLeft="50dp"
-                       android:layout_marginRight="20dp"
-                       android:layout_marginBottom="20dp"
-                       android:src="@drawable/tel" />
-               </LinearLayout>
+                <ImageView
+                    android:id="@+id/appel"
+                    android:layout_width="@dimen/btn_call_width"
+                    android:layout_height="@dimen/btn_call_height"
+                    android:layout_gravity="bottom|center"
+                    android:layout_weight="3"
+                    android:src="@drawable/tel" />
 
         </LinearLayout>
 </ScrollView>

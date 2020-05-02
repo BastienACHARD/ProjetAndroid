@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -30,7 +31,7 @@ public class tabPhoto extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
        View root=inflater.inflate(R.layout.fragment_tab_photo, container, false);
-       ListView list= root.findViewById(R.id.listView);
+       GridView list= root.findViewById(R.id.gridView);
        CustomAdapeter custom=new CustomAdapeter();
        list.setAdapter(custom);
        return root;
