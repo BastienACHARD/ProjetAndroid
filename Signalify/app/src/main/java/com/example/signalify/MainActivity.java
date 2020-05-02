@@ -6,13 +6,17 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -29,6 +33,9 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 // essai de suivre le tuto : https://github.com/osmdroid/osmdroid/wiki/How-to-use-the-osmdroid-library
@@ -39,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
     private ImageView btnParam;
     private SearchView sv;
     private View rootView;
+    private String TAG = "MainActivity";
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,17 +77,28 @@ public class MainActivity extends AppCompatActivity {
         sv=findViewById(R.id.sv_location);
         rootView = findViewById(R.id.root_layout);
 
-
-
         //create a new item to draw on the map
         //your items
-        ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();
         OverlayItem home = new OverlayItem("F. Rallo", "nos bureaux", new GeoPoint(43.65020,7.00517));
         // Drawable m = home.getMarker(0);
-
-
         items.add(home); // Lat/Lon decimal degrees
         items.add(new OverlayItem("Resto", "chez babar", new GeoPoint(43.64950,7.00517))); // Lat/Lon decimal degrees
+
+        db.collection("Accidents")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                items.add(new OverlayItem("Resto", "chez babar", new GeoPoint(43.64950,7.00517)));
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
 
         //the Place icons on the map with a click listener
         ItemizedOverlayWithFocus<OverlayItem> mOverlay = new ItemizedOverlayWithFocus<OverlayItem>(this, items,

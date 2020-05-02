@@ -15,8 +15,8 @@ import com.google.firebase.firestore.GeoPoint;
 
 import java.util.ArrayList;
 
-
 public class AddAccident extends AppCompatActivity {
+
 
     Accident accident;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
