@@ -34,11 +34,10 @@
         android:background="@drawable/bg_round"/>
 
     <ImageView
-        android:layout_marginTop="@dimen/btn_para_margin_top"
+        android:layout_margin="5dp"
         android:id="@+id/btnParam"
-        android:layout_width="@dimen/btn_para_width"
-        android:layout_height="@dimen/btn_para_height"
-        android:layout_gravity="right"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:src="@mipmap/ic_settings" />
 
 </LinearLayout>
@@ -50,9 +49,9 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_action_button"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        android:layout_width="@dimen/btn_add_width"
-        android:layout_height="@dimen/btn_add_height"
+        style="@style/Widget.Design.FloatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:backgroundTint="@color/colorPrimary"

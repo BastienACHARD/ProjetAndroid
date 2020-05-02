@@ -30,7 +30,8 @@ public class ShowDetailActivity extends AppCompatActivity {
         tabDescription=(TabItem)(findViewById(R.id.descriptionTab));
         viewPage = (ViewPager)(findViewById(R.id.viewpage));
         Intent intent=getIntent();
-        int index=intent.getIntExtra("code", 0);
+        String accidentId =intent.getStringExtra("code");
+        int index = 0;
         pageAdapter=new PageAdapter(getSupportFragmentManager(),this.tabLayOut.getTabCount(), index);
         viewPage.setAdapter(pageAdapter);
         getSupportActionBar().setTitle("Détails de l'incident");
