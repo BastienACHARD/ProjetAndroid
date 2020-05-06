@@ -1,7 +1,10 @@
 package com.example.signalify.fragments;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -11,16 +14,37 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.signalify.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.ArrayList;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class tabPhoto extends Fragment {
-    View root;
     int index=0;
+
+    String id;
+    FirebaseFirestore firebaseFirestore ;
+    private FirebaseStorage firebaseStorage;
+    private StorageReference storageReference;
+    ArrayList listImage = new ArrayList() {{
+        add("images/cr7.jpg");
+        add("images/andrea.jpg");
+    }};
+
+    ArrayList<Bitmap> bitmapList= new ArrayList<Bitmap>();
 
     int[] images={R.drawable.accident1,R.drawable.accident3,R.drawable.accident6};
     public tabPhoto() {
@@ -28,23 +52,73 @@ public class tabPhoto extends Fragment {
     }
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if(getArguments()!=null) id= getArguments().getString("overlay");
+
+        firebaseStorage=FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference();
         // Inflate the layout for this fragment
-       View root=inflater.inflate(R.layout.fragment_tab_photo, container, false);
-       GridView list= root.findViewById(R.id.gridView);
-       CustomAdapeter custom=new CustomAdapeter();
-       list.setAdapter(custom);
-       return root;
+        View root=inflater.inflate(R.layout.fragment_tab_photo, container, false);
+        getAccidentImage(id,root);
+       /*GridView list= root.findViewById(R.id.gridView);
+        CustomAdapeter custom=new CustomAdapeter();
+        list.setAdapter(custom);*/
+        return root;
     }
+
+    void displayImage(final ImageView im, String name) {
+        StorageReference imgRef = storageReference.child(name);
+        long MAXBYTES=1024*1024;
+        imgRef.getBytes(MAXBYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+
+              Bitmap  bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                im.setImageBitmap(bitmap);
+
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+    }
+    private void getAccidentImage(String id, final View root){
+        FirebaseFirestore.getInstance().collection("Accidents").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful())
+                {
+
+                }
+                if(task.isComplete())
+                {
+                    DocumentSnapshot doc = task.getResult();
+                    assert doc != null;
+                    listImage = (ArrayList<String>) doc.getData().get("image");
+                    assert listImage != null;
+                    GridView list= root.findViewById(R.id.gridView);
+                    CustomAdapeter custom=new CustomAdapeter();
+                    list.setAdapter(custom);
+                }
+
+            }
+        });
+    }
+
 
     class CustomAdapeter extends BaseAdapter {
 
 
         @Override
         public int getCount() {
-            return images.length;
+            return listImage.size();
         }
 
         @Override
@@ -61,7 +135,7 @@ public class tabPhoto extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             View view=getLayoutInflater().inflate(R.layout.image_solo,null);
             ImageView image=(ImageView)(view.findViewById(R.id.imageView));
-            image.setImageResource(images[position]);
+            displayImage(image,(String)listImage.get(position));
             return view;
         }
     }
