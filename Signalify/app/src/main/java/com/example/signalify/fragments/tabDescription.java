@@ -3,6 +3,7 @@ package com.example.signalify.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -21,20 +22,43 @@ import com.example.signalify.R;
  */
 public class tabDescription extends Fragment {
 
-   int valeur = 0;
+   String id;
+    ArrayList<String> Description =new ArrayList<>();
     public tabDescription() {
+    }
 
-        // Required empty public constructor
+   private void getAccidentDescription(String id, final View root){
+       FirebaseFirestore.getInstance().collection("Accidents").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+           @Override
+           public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+               if(task.isSuccessful())
+               {
+
+               }
+               if(task.isComplete())
+               {
+                   DocumentSnapshot doc = task.getResult();
+                   assert doc != null;
+                  Description = (ArrayList<String>) doc.getData().get("description");
+                   assert Description != null;
+                   String text= Description.get(0);
+                   ((TextView) root.findViewById(R.id.textView2)).setText(text);
+
+               }
+
+           }
+       });
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
-        if(getArguments()!=null) valeur= getArguments().getInt("overlay");
+        if(getArguments()!=null) id= getArguments().getString("overlay");
         View root =inflater.inflate(R.layout.fragment_tab_description, container, false);
+        getAccidentDescription(id,root);
+        if(Description.size()>0)
         ((ImageView)root.findViewById(R.id.appel)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,7 +70,7 @@ public class tabDescription extends Fragment {
         ( ( Button) root.findViewById(R.id.buttonAjout)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast toast=Toast.makeText(getContext(),"A faire bientot ++++"+valeur,Toast.LENGTH_LONG);
+                Toast toast=Toast.makeText(getContext(),id,Toast.LENGTH_LONG);
                 toast.show();
             }
         });

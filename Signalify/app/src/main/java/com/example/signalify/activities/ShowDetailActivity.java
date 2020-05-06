@@ -2,6 +2,7 @@ package com.example.signalify.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.GridView;
 import android.widget.ListView;
 
@@ -33,8 +34,8 @@ public class ShowDetailActivity extends AppCompatActivity {
         viewPage = (ViewPager)(findViewById(R.id.viewpage));
         Intent intent=getIntent();
         String accidentId =intent.getStringExtra("code");
-        int index = 0;
-        pageAdapter=new PageAdapter(getSupportFragmentManager(),this.tabLayOut.getTabCount(), index);
+
+        pageAdapter=new PageAdapter(getSupportFragmentManager(),this.tabLayOut.getTabCount(), accidentId);
         viewPage.setAdapter(pageAdapter);
         getSupportActionBar().setTitle("Détails de l'incident");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

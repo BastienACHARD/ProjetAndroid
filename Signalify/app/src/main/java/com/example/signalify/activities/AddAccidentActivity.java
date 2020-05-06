@@ -46,7 +46,7 @@ public class AddAccidentActivity extends AppCompatActivity {
 
         Button valid = (Button) findViewById(R.id.valid);
         Button cancel = (Button) findViewById(R.id.cancel);
-        EditText description = (EditText) findViewById(R.id.editText);
+        final EditText description = (EditText) findViewById(R.id.editText);
         ImageButton back = (ImageButton) findViewById(R.id.back);
 
         descriptions.add(description.getText().toString().trim());
