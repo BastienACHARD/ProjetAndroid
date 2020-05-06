@@ -1,4 +1,4 @@
-package com.example.signalify;
+package com.example.signalify.fragments;
 
 import android.os.Bundle;
 
@@ -11,6 +11,8 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
+
+import com.example.signalify.R;
 
 
 /**
