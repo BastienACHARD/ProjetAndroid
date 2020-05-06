@@ -8,6 +8,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.example.signalify.fragments.tabDescription;
+import com.example.signalify.fragments.tabPhoto;
+
 public class PageAdapter extends FragmentPagerAdapter {
     private int numofTab;
     private int index=0;

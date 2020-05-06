@@ -1,28 +1,25 @@
-package com.example.signalify;
+package com.example.signalify.activities;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
-import android.location.Location;
-import android.location.LocationListener;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
-import com.example.signalify.models.Accident;
+import com.example.signalify.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
@@ -35,15 +32,12 @@ import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 // essai de suivre le tuto : https://github.com/osmdroid/osmdroid/wiki/How-to-use-the-osmdroid-library
 // et https://stackoverflow.com/questions/18302603/where-do-i-place-the-assets-folder-in-android-studio?rq=1
@@ -55,8 +49,9 @@ public class MainActivity extends AppCompatActivity {
     private View rootView;
     private String TAG = "MainActivity";
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    // ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();
     HashMap<String, OverlayItem> items = new HashMap<String, OverlayItem>();
+    private MyLocationNewOverlay mLocationOverlay;
+    private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
 
     public static boolean radarState,accidentState,chantierState,embouteillageState,imageNotifChoice;
 
@@ -76,12 +71,23 @@ public class MainActivity extends AppCompatActivity {
         map = findViewById(R.id.map);
         map.setTileSource(TileSourceFactory.MAPNIK);    //render
         map.setBuiltInZoomControls(true);               // zoomable
-        map.setMultiTouchControls(true);                //  zoom with 2 fingers
+        map.setMultiTouchControls(true);//  zoom with 2 fingers
 
-        mapController = map.getController();
+        requestPermissionsIfNecessary(new String[] {
+                // if you need to show the current location, uncomment the line below
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                // WRITE_EXTERNAL_STORAGE is required in order to show the map
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        });
+
+         mapController = map.getController();
         mapController.setZoom(18.0);
         GeoPoint startPoint = new GeoPoint(43.65020, 7.00517);
         mapController.setCenter(startPoint);
+
+        this.mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getApplicationContext()),map);
+        this.mLocationOverlay.enableMyLocation();
+        map.getOverlays().add(this.mLocationOverlay);
 
         sv=findViewById(R.id.sv_location);
         rootView = findViewById(R.id.root_layout);
@@ -102,18 +108,16 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                                 //Log.d(TAG, document.getId() + " => " + document.getData());
-                                //Log.d(TAG, document.getId() + " => " + document.getData().get("type"));
-                                items.put(document.getId(),new OverlayItem("Ajout", "chez Lemuel", new GeoPoint(43.64850,7.00517)));
+                                Log.d(TAG, document.getId() + " => " + document.get("type"));
+                                // items.put(document.getId(),new OverlayItem(document.get("type").toString(), document.get("description").toString(), new GeoPoint(document.get("location").)));
+                                items.put(document.getId(),new OverlayItem(document.get("type").toString(), document.get("description").toString(), new GeoPoint(43.64850,7.00517)));
                             }
-                            setItemsOnMap(items);
+                             setItemsOnMap(items);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
-
-        //items.add(new OverlayItem("Ajout", "chez Lemuel", new GeoPoint(43.64850,7.00517)));
-        //Log.d(TAG, items.size() + "MESSAGE");
         //the Place icons on the map with a click listener
 
         loadSwitchsState();
@@ -124,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getApplicationContext(),AddAccident.class);
+                Intent intent=new Intent(getApplicationContext(), AddAccidentActivity.class);
                 startActivity(intent);
                 finish();            }
         });
@@ -133,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         btnParam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),ParametersActivity.class);
+                Intent intent=new Intent(getApplicationContext(), ParametersActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -148,8 +152,9 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
                         //do something
-                        Intent intent=new Intent(getApplicationContext(),ShowDetailActivity.class);
+                        Intent intent=new Intent(getApplicationContext(), ShowDetailActivity.class);
                         intent.putExtra("code", getKey(items,item));
+                        // Log.d(TAG, getKey(items,item));
                         startActivity(intent);
                         return true;
                     }
@@ -192,5 +197,21 @@ public class MainActivity extends AppCompatActivity {
         accidentState = sharedPreferences.getBoolean(param.SACCIDENT, true);
         embouteillageState = sharedPreferences.getBoolean(param.SEMBOUITEILLAGE,true);
         chantierState = sharedPreferences.getBoolean(param.SCHANTIER,true);
+    }
+
+    private void requestPermissionsIfNecessary(String[] permissions) {
+        ArrayList<String> permissionsToRequest = new ArrayList<>();
+        for(String permission : permissions) {
+            if(ContextCompat.checkSelfPermission(this, permission)
+                != PackageManager.PERMISSION_GRANTED) {
+                permissionsToRequest.add(permission);
+            }
+        }
+        if (permissionsToRequest.size() > 0){
+            ActivityCompat.requestPermissions(
+                    this,
+                    permissionsToRequest.toArray(new String[0]),
+                    REQUEST_PERMISSIONS_REQUEST_CODE);
+        }
     }
 }

@@ -15,7 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SplashScreenActivity"
+        <activity android:name=".activities.SplashScreenActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:configChanges="orientation|keyboardHidden|screenSize">
             <intent-filter>
@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,11 +34,11 @@
         </activity>
 
 
-        <activity android:name=".ShowDetailActivity" android:parentActivityName=".MainActivity"/>
-        <activity android:name=".ParametersActivity" android:parentActivityName=".MainActivity"/>
+        <activity android:name=".activities.ShowDetailActivity" android:parentActivityName=".activities.MainActivity"/>
+        <activity android:name=".activities.ParametersActivity" android:parentActivityName=".activities.MainActivity"/>
 
         <activity
-            android:name=".AddAccident"
+            android:name=".activities.AddAccidentActivity"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

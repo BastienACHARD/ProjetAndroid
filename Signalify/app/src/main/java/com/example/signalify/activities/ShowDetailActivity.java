@@ -1,10 +1,12 @@
-package com.example.signalify;
+package com.example.signalify.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.GridView;
 import android.widget.ListView;
 
+import com.example.signalify.PageAdapter;
+import com.example.signalify.R;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 

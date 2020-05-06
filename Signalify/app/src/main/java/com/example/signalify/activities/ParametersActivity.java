@@ -1,16 +1,17 @@
-package com.example.signalify;
+package com.example.signalify.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.signalify.R;
+import com.example.signalify.activities.MainActivity;
 
 public class ParametersActivity  extends AppCompatActivity {
 
