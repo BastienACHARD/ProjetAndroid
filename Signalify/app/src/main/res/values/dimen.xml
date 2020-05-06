@@ -14,12 +14,14 @@
             <!-- activity parameters -->
     <dimen name="btn_back_para_height">76dp</dimen>
     <dimen name="btn_back_para_width">74dp</dimen>
+    <dimen name="btn_reinit_text_size">20dp</dimen>
+    <dimen name="btn_reinit_margin">30dp</dimen>
     <dimen name="btn_back_para_marginRight">20dp</dimen>
     <dimen name="margin_txt_sous_param_size">25dp</dimen>
     <dimen name="align_param_icon">20dp</dimen>
     <dimen name="txt_param_size">45dp</dimen>
     <dimen name="linearlayout_padding">20dp</dimen>
-    <dimen name="margin_size">20dp</dimen>
+    <dimen name="margin_size">15dp</dimen>
     <dimen name="txt_swich_size">25dp</dimen>
     <dimen name="label_under_txt_param_size">26dp</dimen>
     <dimen name="img_accident_size">20dp</dimen>
