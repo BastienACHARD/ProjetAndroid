@@ -10,14 +10,14 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 public class PageAdapter extends FragmentPagerAdapter {
     private int numofTab;
-    private int index=0;
+    private String accidentId ;
 
-    public PageAdapter(@NonNull FragmentManager fm, int num, int index) {
+    public PageAdapter(@NonNull FragmentManager fm, int num, String id) {
 
         super(fm);
-        this.index=index;
+        this.accidentId =id;
         this.numofTab=num;
-        Log.d("ok",""+index);
+        Log.d("ok",""+id);
     }
 
 
@@ -26,7 +26,7 @@ public class PageAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
 
         Bundle args=new Bundle();
-        args.putInt("overlay",index);
+        args.putString("overlay", accidentId);
         switch(position)
         {
             case 0: {

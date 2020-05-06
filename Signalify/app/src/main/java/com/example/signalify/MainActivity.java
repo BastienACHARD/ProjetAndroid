@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     // ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();
     HashMap<String, OverlayItem> items = new HashMap<String, OverlayItem>();
+   
 
     public static boolean radarState,accidentState,chantierState,embouteillageState,imageNotifChoice;
 

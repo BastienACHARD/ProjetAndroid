@@ -28,7 +28,7 @@ public class AddAccident extends AppCompatActivity {
     Accident accident;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String type = "route";
-    GeoPoint location = new GeoPoint(11, 11);
+    GeoPoint location = new GeoPoint(11.8, 11);
     ArrayList<String> descriptions = new ArrayList<>();
     ArrayList<String> images = new ArrayList<>();
     int id = 0;
@@ -46,7 +46,7 @@ public class AddAccident extends AppCompatActivity {
 
         Button valid = (Button) findViewById(R.id.valid);
         Button cancel = (Button) findViewById(R.id.cancel);
-        EditText description = (EditText) findViewById(R.id.editText);
+        final EditText description = (EditText) findViewById(R.id.editText);
         ImageButton back = (ImageButton) findViewById(R.id.back);
 
         descriptions.add(description.getText().toString().trim());
