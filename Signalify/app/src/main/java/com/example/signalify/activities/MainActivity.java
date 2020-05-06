@@ -17,6 +17,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.signalify.R;
+import com.example.signalify.databaseAccess.AccessAccidents;
+import com.example.signalify.models.Accident;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -32,12 +34,15 @@ import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 // essai de suivre le tuto : https://github.com/osmdroid/osmdroid/wiki/How-to-use-the-osmdroid-library
 // et https://stackoverflow.com/questions/18302603/where-do-i-place-the-assets-folder-in-android-studio?rq=1
@@ -49,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
     private View rootView;
     private String TAG = "MainActivity";
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
+    List<Accident> listeAccidentsIntermédiares = new ArrayList<>();
+    public static List<Accident> accidentsListe = new ArrayList<>();
     HashMap<String, OverlayItem> items = new HashMap<String, OverlayItem>();
     private MyLocationNewOverlay mLocationOverlay;
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
@@ -112,12 +121,13 @@ public class MainActivity extends AppCompatActivity {
                                 // items.put(document.getId(),new OverlayItem(document.get("type").toString(), document.get("description").toString(), new GeoPoint(document.get("location").)));
                                 items.put(document.getId(),new OverlayItem(document.get("type").toString(), document.get("description").toString(), new GeoPoint(43.64850,7.00517)));
                             }
-                             setItemsOnMap(items);
+
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
+        setItemsOnMap(items);
         //the Place icons on the map with a click listener
 
         loadSwitchsState();
@@ -143,6 +153,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("Accidents");
+
+        new AccessAccidents().readAccidents();
+        accidentsListe = listeAccidentsIntermédiares;
     }
 
     public void setItemsOnMap(final HashMap<String, OverlayItem> items){
