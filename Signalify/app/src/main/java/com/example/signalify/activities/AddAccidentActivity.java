@@ -9,7 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -17,15 +19,23 @@ import androidx.core.app.NotificationManagerCompat;
 import com.example.signalify.Notifications;
 import com.example.signalify.R;
 import com.example.signalify.models.Accident;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class AddAccidentActivity extends AppCompatActivity {
 
 
     Accident accident;
+    Random rand = new Random();
+    private FirebaseStorage firebaseStorage;
+    private StorageReference storageReference;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String type = "Accident";
     GeoPoint location = new GeoPoint(43.65620, 7.00517);
@@ -40,6 +50,8 @@ public class AddAccidentActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        firebaseStorage= FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_accident);
 
@@ -57,7 +69,8 @@ public class AddAccidentActivity extends AppCompatActivity {
             public void onClick(View view) {
                 setAccident(type, location, descriptions, images);
                 addAccidentDataBase(accident);
-                    sendNotificationChannel("","Un nouvent accident a été déclaré", Notifications.CHANNEL_3_ID, NotificationCompat.PRIORITY_HIGH);
+             //   showImage(images.get(rand.nextInt(images.size())));
+                showImage("images/cr7.jpg");
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
@@ -92,11 +105,11 @@ public class AddAccidentActivity extends AppCompatActivity {
         db.collection("Accidents").add(accident);
     }
 
-    private void sendNotificationChannel(String title, String message, String channelId, int priority) {
+    private void sendNotificationChannel(String title, String message, String channelId, int priority, Bitmap bitmap) {
         Intent activityIntent = new Intent(this, AddAccidentActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this,
                 0, activityIntent, 0);
-        Bitmap picture = BitmapFactory.decodeResource(getResources(), R.drawable.accident1);
+
 
 
         NotificationCompat.Builder notification = new NotificationCompat.Builder(getApplicationContext(), channelId)
@@ -104,7 +117,7 @@ public class AddAccidentActivity extends AppCompatActivity {
                 .setContentText( message)
                 .setPriority(priority)
                 .setStyle(new NotificationCompat.BigPictureStyle()
-                        .bigPicture(picture)
+                        .bigPicture(bitmap)
                         .bigLargeIcon(null))
                  .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                 .setContentIntent(contentIntent)
@@ -114,6 +127,27 @@ public class AddAccidentActivity extends AppCompatActivity {
                 .setOnlyAlertOnce(true);
 
         NotificationManagerCompat.from(this).notify(++id, notification.build());
+    }
+    void showImage( String name) {
+        StorageReference imgRef = storageReference.child(name);
+        long MAXBYTES=1024*1024;
+        imgRef.getBytes(MAXBYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+
+                Bitmap  bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                sendNotificationChannel("","Un nouvent accident a été déclaré", Notifications.CHANNEL_3_ID, NotificationCompat.PRIORITY_HIGH,bitmap);
+
+
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
     }
 
 

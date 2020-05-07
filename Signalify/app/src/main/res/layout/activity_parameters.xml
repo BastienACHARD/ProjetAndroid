@@ -68,9 +68,24 @@
                 android:id="@+id/sRadar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAlignment="textEnd"
-                android:text="Radar                                         "
+                android:text="Radar                                            "
                 android:textSize="@dimen/txt_swich_size"
                 android:layout_margin="@dimen/margin_size"/>
+            <Switch
+                android:id="@+id/sAutorisation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Notifications avec image                 "
+                android:textSize="@dimen/txt_swich_size"
+                android:layout_margin="@dimen/margin_size"/>
+
+            <Button
+                android:id="@+id/btnReinitaliser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Reinitialiser "
+                android:textSize="@dimen/btn_reinit_text_size"
+                android:backgroundTint="#34C924"
+                android:layout_margin="@dimen/btn_reinit_margin"/>
 
 </LinearLayout>
