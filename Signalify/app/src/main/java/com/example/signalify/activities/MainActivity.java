@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent=new Intent(getApplicationContext(), AddAccidentActivity.class);
                 startActivity(intent);
-                finish();            }
+                        }
         });
 
         btnParam= findViewById(R.id.btnParam);
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent=new Intent(getApplicationContext(), ParametersActivity.class);
                 startActivity(intent);
-                finish();
+
             }
         });
 

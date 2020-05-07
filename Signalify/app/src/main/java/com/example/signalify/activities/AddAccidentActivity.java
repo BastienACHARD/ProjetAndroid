@@ -1,5 +1,6 @@
 package com.example.signalify.activities;
 
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,6 +50,7 @@ public class AddAccidentActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         firebaseStorage= FirebaseStorage.getInstance();
@@ -55,11 +58,12 @@ public class AddAccidentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_accident);
 
-
+        getSupportActionBar().setTitle("Ajouter un incident");
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         Button valid = (Button) findViewById(R.id.valid);
         Button cancel = (Button) findViewById(R.id.cancel);
         final EditText description = (EditText) findViewById(R.id.editText);
-        ImageButton back = (ImageButton) findViewById(R.id.back);
+
 
         descriptions.add(description.getText().toString().trim());
         images.add("image1");
@@ -87,14 +91,7 @@ public class AddAccidentActivity extends AppCompatActivity {
             }
         });
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+
     }
 
     public void setAccident(String type, GeoPoint location, ArrayList<String> description, ArrayList<String> image) {
@@ -104,7 +101,14 @@ public class AddAccidentActivity extends AppCompatActivity {
     public void addAccidentDataBase(Accident accident) {
         db.collection("Accidents").add(accident);
     }
-
+    private void sendNotificationChannelNormal(String title, String message, String channelId, int priority) {
+        NotificationCompat.Builder notification=new NotificationCompat.Builder(getApplicationContext(),channelId)
+                .setSmallIcon(R.drawable.logoaccident)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setPriority(priority);
+        NotificationManagerCompat.from(this).notify(++id,notification.build());
+    }
     private void sendNotificationChannel(String title, String message, String channelId, int priority, Bitmap bitmap) {
         Intent activityIntent = new Intent(this, AddAccidentActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this,
@@ -136,8 +140,10 @@ public class AddAccidentActivity extends AppCompatActivity {
             public void onSuccess(byte[] bytes) {
 
                 Bitmap  bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
-                sendNotificationChannel("","Un nouvent accident a été déclaré", Notifications.CHANNEL_3_ID, NotificationCompat.PRIORITY_HIGH,bitmap);
-
+                if(MainActivity.imageNotifChoice)
+                sendNotificationChannel("","Un nouvel incident a été déclaré", Notifications.CHANNEL_3_ID, NotificationCompat.PRIORITY_HIGH,bitmap);
+                else
+                    sendNotificationChannelNormal("","Un nouvel incident a été déclaré",Notifications.CHANNEL_1_ID,NotificationCompat.PRIORITY_LOW);
 
 
             }

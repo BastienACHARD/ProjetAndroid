@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -49,6 +50,10 @@ public class tabDescription extends Fragment {
                    assert Description != null;
                    String text= Description.get(0);
                    ((TextView) root.findViewById(R.id.textView2)).setText(text);
+                   ArrayList<String> comment= new ArrayList<>();
+                   for(int i=1; i<Description.size();i++)
+                   comment.add(Description.get(i));
+                   ArrayAdapter adapter=new ArrayAdapter(getContext(),android.R.layout.simple_expandable_list_item_1,comment);
 
                }
 

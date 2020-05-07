@@ -13,32 +13,11 @@
     android:orientation="horizontal"
     android:padding="@dimen/linearlayout_padding">
 
-    <ImageButton
-        android:id="@+id/btnBack"
-        android:layout_width="@dimen/btn_back_para_width"
-        android:layout_height="@dimen/btn_back_para_height"
-        android:layout_marginRight="@dimen/btn_back_para_marginRight"
-        android:src="@drawable/arrow_left" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginTop="@dimen/margin_size"
-        android:text="Parametres"
-        android:textSize="@dimen/txt_param_size" />
 
 
 </LinearLayout>
 
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Affichage des types d'accident"
-                android:textSize="@dimen/txt_swich_size"
-                android:layout_marginBottom="@dimen/margin_size"/>
 
     <LinearLayout
         android:layout_width="wrap_content"

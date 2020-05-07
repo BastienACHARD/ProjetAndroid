@@ -1,5 +1,6 @@
 package com.example.signalify.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -27,11 +28,14 @@ public class ParametersActivity  extends AppCompatActivity {
     public static String SCHANTIER= "chantier";
     public static String SIMGNOTIF= "imgnotif";
 
+    @SuppressLint("RestrictedApi")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parameters);
-        btnBack=(ImageButton)findViewById(R.id.btnBack);
+        getSupportActionBar().setTitle("Paramètres");
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        //btnBack=(ImageButton)findViewById(R.id.btnBack);
         radar= findViewById(R.id.sRadar);
         accident =findViewById(R.id.sAccident);
         embouteillage= findViewById(R.id.sEmbouteillage);
@@ -41,14 +45,6 @@ public class ParametersActivity  extends AppCompatActivity {
 
         Log.d("Essai",radar.isChecked()+"");
 
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-               // finish();
-            }
-        });
 
         loadSwitchsState();
         updateSwitchsState();
