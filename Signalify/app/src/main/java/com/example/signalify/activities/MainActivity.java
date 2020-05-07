@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -23,6 +24,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -43,6 +45,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 // essai de suivre le tuto : https://github.com/osmdroid/osmdroid/wiki/How-to-use-the-osmdroid-library
 // et https://stackoverflow.com/questions/18302603/where-do-i-place-the-assets-folder-in-android-studio?rq=1
@@ -54,10 +57,8 @@ public class MainActivity extends AppCompatActivity {
     private View rootView;
     private String TAG = "MainActivity";
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
-    List<Accident> listeAccidentsIntermédiares = new ArrayList<>();
-    public static List<Accident> accidentsListe = new ArrayList<>();
+    public static HashMap<String, Accident> accidentsListe = new HashMap<String, Accident>();
+    HashMap<String, Accident> accidentsListeInt = new HashMap<String, Accident>();
     HashMap<String, OverlayItem> items = new HashMap<String, OverlayItem>();
     private MyLocationNewOverlay mLocationOverlay;
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
@@ -65,23 +66,22 @@ public class MainActivity extends AppCompatActivity {
     public static boolean radarState,accidentState,chantierState,embouteillageState,imageNotifChoice;
 
     @Override
+    protected void onStart() {
+        Log.d("START", "ON START LO");
+        super.onStart();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         IMapController mapController;
-
         super.onCreate(savedInstanceState);
-        //load/initialize the osmdroid configuration, this can be done
         Configuration.getInstance().load(getApplicationContext(),
                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext()) );
-
-        //inflate and create the map
         setContentView(R.layout.activity_main);
-
         map = findViewById(R.id.map);
         map.setTileSource(TileSourceFactory.MAPNIK);    //render
         map.setBuiltInZoomControls(true);               // zoomable
         map.setMultiTouchControls(true);//  zoom with 2 fingers
-
         requestPermissionsIfNecessary(new String[] {
                 // if you need to show the current location, uncomment the line below
                 Manifest.permission.ACCESS_FINE_LOCATION,
@@ -89,46 +89,34 @@ public class MainActivity extends AppCompatActivity {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
         });
 
-         mapController = map.getController();
+        mapController = map.getController();
         mapController.setZoom(18.0);
         GeoPoint startPoint = new GeoPoint(43.65020, 7.00517);
         mapController.setCenter(startPoint);
 
-        this.mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getApplicationContext()),map);
-        this.mLocationOverlay.enableMyLocation();
-        map.getOverlays().add(this.mLocationOverlay);
 
         sv=findViewById(R.id.sv_location);
         rootView = findViewById(R.id.root_layout);
 
         //create a new item to draw on the map
         //your items
-        // OverlayItem home = new OverlayItem("F. Rallo", "nos bureaux", new GeoPoint(43.65020,7.00517));
-        // Drawable m = home.getMarker(0);
-        // items.add(home); // Lat/Lon decimal degrees
+        //OverlayItem home = new OverlayItem("F. Rallo", "nos bureaux", new GeoPoint(43.65020,7.00517));
+         //Drawable m = home.getMarker(0);
+         //items.put("1",home); // Lat/Lon decimal degrees
         // items.add(new OverlayItem("Resto", "chez babar", new GeoPoint(43.64950,7.00517))); // Lat/Lon decimal degrees
-        // items.add(new OverlayItem("Ajout", "chez Lemuel", new GeoPoint(43.64850,7.00517)));
-
-        db.collection("Accidents")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                //Log.d(TAG, document.getId() + " => " + document.getData());
-                                Log.d(TAG, document.getId() + " => " + document.get("type"));
-                                // items.put(document.getId(),new OverlayItem(document.get("type").toString(), document.get("description").toString(), new GeoPoint(document.get("location").)));
-                                items.put(document.getId(),new OverlayItem(document.get("type").toString(), document.get("description").toString(), new GeoPoint(43.64850,7.00517)));
-                            }
-
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-        setItemsOnMap(items);
+         //items.put("1",new OverlayItem("Ajout", "chez Lemuel", new GeoPoint(43.64850,7.00517)));
         //the Place icons on the map with a click listener
+        new AccessAccidents().allAccidents(new AccessAccidents.MyCallback() {
+            @Override
+            public void onCallback(HashMap<String, Accident> accidentsList) {
+                accidentsListeInt.putAll(accidentsList);
+                accidentsListe = accidentsListeInt;
+                items = constructOverlay(accidentsListe);
+                setItemsOnMap(items);
+            }
+        });
+
+
 
         loadSwitchsState();
         getSupportActionBar().hide();
@@ -152,25 +140,27 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
 
-
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("Accidents");
-
-        new AccessAccidents().readAccidents();
-        accidentsListe = listeAccidentsIntermédiares;
+    public HashMap<String, OverlayItem> constructOverlay(final HashMap<String, Accident> map){
+        for (Map.Entry mapentry : map.entrySet()) {
+            Accident accident = (Accident) mapentry.getValue();
+            Log.d("Tab", String.valueOf(accident.toString()));
+            items.put((String) mapentry.getKey(),new OverlayItem(accident.getType(), accident.getDescription().get(0),
+                    new GeoPoint(accident.getLocation().getLatitude(), accident.getLocation().getLongitude())));
+        }
+         return items;
     }
 
     public void setItemsOnMap(final HashMap<String, OverlayItem> items){
         ArrayList<OverlayItem> list = new ArrayList<OverlayItem>(items.values());
+        Log.d("Tab", String.valueOf(items.values()));
         ItemizedOverlayWithFocus<OverlayItem> mOverlay = new ItemizedOverlayWithFocus<OverlayItem>(this, list,
                 new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
                     @Override
                     public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
-                        //do something
                         Intent intent=new Intent(getApplicationContext(), ShowDetailActivity.class);
                         intent.putExtra("code", getKey(items,item));
-                        // Log.d(TAG, getKey(items,item));
                         startActivity(intent);
                         return true;
                     }

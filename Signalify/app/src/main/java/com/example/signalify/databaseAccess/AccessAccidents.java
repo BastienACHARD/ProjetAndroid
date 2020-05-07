@@ -5,50 +5,53 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.signalify.models.Accident;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.annotations.Nullable;
-import com.google.firebase.firestore.EventListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 public class AccessAccidents {
-    private FirebaseDatabase accidentsDatabase;
-    private DatabaseReference accidentsReference;
-    private List<Accident> accidentsListes = new ArrayList<>();
-    private Map<String, Accident> accidentsListe = new HashMap<>();
+    public HashMap<String, Accident> accidentsListe = new HashMap<>();
     FirebaseFirestore db;
 
     public AccessAccidents(){
         db = FirebaseFirestore.getInstance();
     }
 
-    public void readAccidents(){
-        db.collection("Accidents")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value,
-                                        @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.w("Access", "Listen failed.", e);
-                            return;
-                        }
+    public interface MyCallback {
+        void onCallback(HashMap<String, Accident> accidentsList);
+    }
 
-                        List<String> cities = new ArrayList<>();
-                        for (QueryDocumentSnapshot doc : value) {
-                            Log.d("Access", "Current cites in CA: " + cities);
+    public void allAccidents(final MyCallback myCallback){
+        db.collection("Accidents")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            accidentsListe.clear();
+                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+
+                                Accident newItem = new Accident(
+                                        document.getString("type"),
+                                        document.getGeoPoint("location"),
+                                        (ArrayList<String>) document.get("description"),
+                                        (ArrayList<String>) document.get("image"));
+                                accidentsListe.put(document.getId(), newItem);
+
+                            }
+                            myCallback.onCallback(accidentsListe);
+                        } else {
+                            Log.d("all", "Error getting documents: ", task.getException());
                         }
                     }
                 });
+       // Log.d("Affiche", accidentsListe.toString());
     }
 }

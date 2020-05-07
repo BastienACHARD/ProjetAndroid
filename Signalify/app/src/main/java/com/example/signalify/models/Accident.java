@@ -58,4 +58,9 @@ public class Accident {
         this.image = image;
     }
 
+    public String toString(){
+
+        return getType() + " " + getDescription().get(0) + " " + getLocation().getLatitude() + " " +getLocation().getLongitude();
+    }
+
 }
