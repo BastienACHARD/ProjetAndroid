@@ -1,50 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/valid"
-        android:layout_width="145dp"
-        android:layout_height="58dp"
-        android:layout_margin="20dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginBottom="32dp"
-        android:layout_weight="2"
-        android:background="@drawable/custom_button1"
-        android:text="valider"
-        android:textColor="#000000"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/cancel"
-        android:layout_width="145dp"
-        android:layout_height="58dp"
-        android:layout_margin="20dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
-        android:layout_weight="2"
-        android:background="@drawable/custom_button1"
-        android:text="annuler"
-        android:textColor="#000000"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-
+    <Spinner
+        android:id="@+id/spiner"
+        android:layout_width="267dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        android:entries="@array/List"
+        android:gravity="center_horizontal" />
 
     <EditText
         android:id="@+id/editText"
-        android:layout_width="352dp"
-        android:layout_height="162dp"
-        android:ems="10"
+        android:layout_width="match_parent"
+        android:layout_height="264dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/custom_edit"
+        android:hint="Entrer une description"
         android:inputType="textPersonName"
-        android:text="description"
-        app:layout_constraintBottom_toTopOf="@+id/valid"
-        tools:layout_editor_absoluteX="26dp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintBottom_toTopOf="@+id/valid" />
+    <Button
+        android:layout_marginTop="19dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:id="@+id/photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/frag_description_margin"
+        android:text="Ajouter une photo"
+        android:textColor="#000000" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        >
+
+        <Button
+            android:id="@+id/valid"
+
+            android:layout_width="163dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/frag_description_margin"
+            android:background="@drawable/custom_button1"
+            android:text="Valider"
+            android:textColor="#000000" />
+
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="161dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/frag_description_margin"
+            android:background="@drawable/custom_button1"
+            android:text="Annuler"
+            android:textColor="#000000" />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

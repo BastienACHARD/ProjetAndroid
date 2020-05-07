@@ -13,10 +13,8 @@
     android:orientation="horizontal"
     android:padding="@dimen/linearlayout_padding">
 
-
-
 </LinearLayout>
-    
+
             <Switch
                 android:id="@+id/sAccident"
                 android:layout_width="wrap_content"

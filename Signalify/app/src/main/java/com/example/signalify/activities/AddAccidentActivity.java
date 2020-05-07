@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Switch;
 
 import androidx.annotation.NonNull;
@@ -38,6 +39,7 @@ public class AddAccidentActivity extends AppCompatActivity {
     Random rand = new Random();
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
+    Spinner spinner;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String type = "Accident";
     GeoPoint location = new GeoPoint(43.65620, 7.00517);
@@ -60,6 +62,7 @@ public class AddAccidentActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Ajouter un incident");
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        spinner=(Spinner) (findViewById(R.id.spiner)) ;
         Button valid = (Button) findViewById(R.id.valid);
         Button cancel = (Button) findViewById(R.id.cancel);
         final EditText description = (EditText) findViewById(R.id.editText);

@@ -21,7 +21,7 @@
                 android:layout_margin="30dp"
                 android:layout_weight="1"
                 android:textSize="@dimen/txt_description_size"
-                android:text="@string/Text"/>
+                android:text=""/>
                 <Button
                     android:id="@+id/buttonAjout"
                     android:layout_width="match_parent"
