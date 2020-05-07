@@ -40,7 +40,7 @@ public class AddAccidentActivity extends AppCompatActivity {
     private StorageReference storageReference;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String type = "Accident";
-    GeoPoint location = new GeoPoint(43.61020, 7.00517);
+    GeoPoint location = new GeoPoint(43.65620, 7.00517);
     ArrayList<String> descriptions = new ArrayList<>();
     ArrayList<String> images = new ArrayList<>();
     int id = 0;
