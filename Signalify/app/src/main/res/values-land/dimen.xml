@@ -3,7 +3,7 @@
 
             <!-- activity main -->
 
-    <dimen name="linearlayout_Search_view_size">80dp</dimen>
+    <dimen name="linearlayout_Search_view_size">70dp</dimen>
     <dimen name="btn_para_margin_top">10dp</dimen>
     <dimen name="search_view_width">500dp</dimen>
     <dimen name="btn_para_width">70dp</dimen>
@@ -16,12 +16,13 @@
     <dimen name="btn_back_para_width">74dp</dimen>
     <dimen name="btn_back_para_marginRight">20dp</dimen>
     <dimen name="btn_reinit_text_size">20dp</dimen>
-    <dimen name="btn_reinit_margin">30dp</dimen>
+    <dimen name="layout_width">1139dp</dimen>
+    <dimen name="btn_reinit_margin">45dp</dimen>
     <dimen name="align_param_icon">15dp</dimen>
     <dimen name="txt_param_size">52dp</dimen>
     <dimen name="linearlayout_padding">40dp</dimen>
     <dimen name="margin_size">25dp</dimen>
-    <dimen name="txt_swich_size">30dp</dimen>
+    <dimen name="txt_swich_size">27dp</dimen>
     <dimen name="label_under_txt_param_size">46dp</dimen>
 
             <!-- fragment tab photo -->
@@ -32,9 +33,9 @@
 
             <!-- image solo -->
 
-    <dimen name="img_height">250dp</dimen>
-    <dimen name="img_width">400dp</dimen>
-    <dimen name="item_width">400dp</dimen>
+    <dimen name="img_height">300dp</dimen>
+    <dimen name="img_width">450dp</dimen>
+    <dimen name="item_width">600dp</dimen>
 
              <!-- Fragment description -->
     <dimen name="magin">20dp</dimen>

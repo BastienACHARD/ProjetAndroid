@@ -20,34 +20,35 @@
         android:focusableInTouchMode="true"
         android:gravity="center"
         android:layout_height="@dimen/linearlayout_Search_view_size">
-<LinearLayout
-    android:id="@+id/root_layout"
-    android:layout_width="wrap_content"
-    android:orientation="horizontal"
-    android:focusableInTouchMode="true"
-    android:layout_gravity="center_horizontal"
-    android:gravity="center"
-    android:layout_height="@dimen/linearlayout_Search_view_size">
+
+        <LinearLayout
+            android:id="@+id/root_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:orientation="horizontal">
 
 
-    <androidx.appcompat.widget.SearchView
-        android:layout_width="@dimen/search_view_width"
-        android:layout_height="match_parent"
-        android:id="@+id/sv_location"
-        app:queryHint="Rechercher..."
-        app:iconifiedByDefault="false"
-        android:layout_margin="8dp"
-        android:elevation="5dp"
-        android:background="@drawable/bg_round"/>
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/sv_location"
+                android:layout_width="@dimen/search_view_width"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/bg_round"
+                android:elevation="5dp"
+                app:iconifiedByDefault="false"
+                app:queryHint="Rechercher..." />
 
-    <ImageView
-        android:id="@+id/btnParam"
-        android:layout_width="match_parent"
-        android:layout_height="73dp"
-        android:layout_margin="5dp"
-        android:src="@mipmap/ic_settings" />
+            <ImageView
+                android:id="@+id/btnParam"
+                android:layout_width="56dp"
+                android:layout_height="71dp"
+                android:layout_margin="5dp"
+                android:src="@mipmap/ic_settings" />
 
-</LinearLayout>
+        </LinearLayout>
 </LinearLayout>
 
 
@@ -57,8 +58,8 @@
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_action_button"
         style="@style/Widget.Design.FloatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="65dp"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:backgroundTint="@color/colorPrimary"

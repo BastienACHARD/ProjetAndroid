@@ -16,6 +16,7 @@
     <dimen name="btn_back_para_width">74dp</dimen>
     <dimen name="btn_back_para_marginRight">150dp</dimen>
     <dimen name="btn_reinit_text_size">20dp</dimen>
+    <dimen name="layout_width">1139dp</dimen>
     <dimen name="btn_reinit_margin">30dp</dimen>
     <dimen name="align_param_icon">20dp</dimen>
     <dimen name="txt_param_size">62dp</dimen>

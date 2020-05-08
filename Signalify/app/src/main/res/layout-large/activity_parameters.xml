@@ -20,7 +20,7 @@
 
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/layout_width"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:orientation="horizontal">
@@ -30,7 +30,7 @@
                 android:id="@+id/sAccident"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Accident de route                         "
+                android:text="Accident de route                          "
                 android:textSize="@dimen/txt_swich_size"
                 android:layout_margin="@dimen/margin_size"/>
 
@@ -42,55 +42,58 @@
                 android:textSize="@dimen/txt_swich_size"
                 android:layout_margin="@dimen/margin_size"/>
     </LinearLayout>
+
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/layout_width"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:orientation="horizontal">
 
 
-            <Switch
-                android:id="@+id/sEmbouteillage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Embouteillage                              "
-                android:textSize="@dimen/txt_swich_size"
-                android:layout_margin="@dimen/margin_size"/>
-
-            <Switch
-                android:id="@+id/sRadar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAlignment="textEnd"
-                android:text="Radar                                            "
-                android:textSize="@dimen/txt_swich_size"
-                android:layout_margin="@dimen/margin_size"/>
-
-        </LinearLayout>
-        <LinearLayout
+        <Switch
+            android:id="@+id/sEmbouteillage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:orientation="horizontal">
+            android:layout_margin="@dimen/margin_size"
+            android:text="Embouteillage                               "
+            android:textSize="@dimen/txt_swich_size" />
+
+        <Switch
+            android:id="@+id/sRadar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_size"
+            android:text="Radar                                           "
+            android:textAlignment="textEnd"
+            android:textSize="@dimen/txt_swich_size" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="@dimen/layout_width"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
 
 
-            <Switch
-                android:id="@+id/sAutorisation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAlignment="textEnd"
-                android:text="Notifications avec image                  "
-                android:textSize="@dimen/txt_swich_size"
-                android:layout_margin="@dimen/margin_size"/>
+        <Switch
+            android:id="@+id/sAutorisation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_size"
+            android:text="Notifications avec image            "
+            android:textSize="@dimen/txt_swich_size" />
 
-            <Button
-                android:id="@+id/btnReinitaliser"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Reinitialiser "
-                android:textSize="@dimen/btn_reinit_text_size"
-                android:backgroundTint="#34C924"
-                android:layout_marginRight="@dimen/btn_reinit_margin"/>
+        <Button
+            android:id="@+id/btnReinitaliser"
+            android:layout_width="434dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="@dimen/btn_reinit_margin"
+            android:backgroundTint="#34C924"
+            android:text="Reinitialiser "
+            android:textSize="@dimen/btn_reinit_text_size" />
 
-        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
