@@ -1,6 +1,8 @@
 package com.example.signalify.activities;
 
 import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.preference.PreferenceManager;
@@ -21,8 +24,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.signalify.Notifications;
 import com.example.signalify.R;
 import com.example.signalify.databaseAccess.AccessAccidents;
 import com.example.signalify.models.Accident;
@@ -69,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private View rootView;
     private LocationManager locationManager;
     private String TAG = "MainActivity";
+    private static final String CANAL = "MyNotifCanal";
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     public static HashMap<String, Accident> accidentsListe = new HashMap<String, Accident>();
     HashMap<String, Accident> accidentsListeInt = new HashMap<String, Accident>();
@@ -106,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         GeoPoint startPoint = new GeoPoint(43.6522, 7.00547);
         mapController.setCenter(startPoint);
         addMaker(startPoint);
-        //checkProximity(startPoint);
+        if(checkProximity(startPoint)) generateNotification();
 
 
         sv = findViewById(R.id.sv_location);
@@ -319,7 +325,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         myLocation = center;
        // mapController.animateTo(center);
        // addMaker(center);
-        //checkProximity(center);
+        if(checkProximity(center)) generateNotification();
     }
 
     @Override
@@ -337,15 +343,19 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     }
 
-    private void checkProximity(GeoPoint center) {
+    private boolean checkProximity(GeoPoint myLocation) {
         for (Map.Entry mapentry : accidentsListe.entrySet()) {
             Accident accident = (Accident) mapentry.getValue();
-            items.put((String) mapentry.getKey(),new OverlayItem(accident.getType(), accident.getDescription().get(0),
-                    new GeoPoint(accident.getLocation().getLatitude(), accident.getLocation().getLongitude())));
-            double distance = center.distanceToAsDouble(new GeoPoint(accident.getLocation().getLatitude(), accident.getLocation().getLongitude()));
+            double distance = myLocation.distanceToAsDouble(new GeoPoint(accident.getLocation().getLatitude(), accident.getLocation().getLongitude()));
             if(distance <= 10000000){
-                Log.d("PROXIMITY","Proche");
+                return true;
             }
         }
+        return false;
+    }
+
+    public void generateNotification(){
+        //Notifications notifications = new Notifications();
+        //notifications.sendNotificationChannelNormal("Vous êtes proche d'un accident !","Vous êtes à 100 Mètres d'un accident. Cliquez pour en savoir plus.",Notifications.CHANNEL_ID,NotificationCompat.PRIORITY_HIGH);
     }
 }
