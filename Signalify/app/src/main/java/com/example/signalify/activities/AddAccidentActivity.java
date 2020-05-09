@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -74,6 +75,8 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
                 final Notifications notifications = new Notifications();
                 setAccident(type, location, descriptions, images);
                 addAccidentDataBase(accident);
+                Log.d("show me0", ""+ MainActivity.imageNotifChoice);
+                Log.d("show me0", ""+ MainActivity.radarState);
              //   showImage(images.get(rand.nextInt(images.size())));
 
                showImage("images/cr7.jpg");
