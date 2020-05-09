@@ -75,8 +75,7 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
                 final Notifications notifications = new Notifications();
                 setAccident(type, location, descriptions, images);
                 addAccidentDataBase(accident);
-                Log.d("show me0", ""+ MainActivity.imageNotifChoice);
-                Log.d("show me0", ""+ MainActivity.radarState);
+
              //   showImage(images.get(rand.nextInt(images.size())));
 
                showImage("images/cr7.jpg");
@@ -120,7 +119,7 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
                 else
                    sendNotificationChannelNormal("Un nouvel incident a été déclaré.","Cliquez pour plus d'informations sur l'accident.",Notifications.CHANNEL_ID,NotificationCompat.PRIORITY_HIGH);
 
-*/
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
