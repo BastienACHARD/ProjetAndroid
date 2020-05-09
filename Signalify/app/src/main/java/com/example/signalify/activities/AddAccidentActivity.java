@@ -114,12 +114,12 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
             public void onSuccess(byte[] bytes) {
 
                 Bitmap  bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
-                if(MainActivity.imageNotifChoice)
+                /*if(MainActivity.imageNotifChoice)
                 notifications.sendNotificationChannel("Un nouvel incident a été déclaré.","Cliquez pour plus d'informations sur l'accident.", Notifications.CHANNEL_ID, NotificationCompat.PRIORITY_HIGH,bitmap);
                 else
                     notifications.sendNotificationChannelNormal("Un nouvel incident a été déclaré.","Cliquez pour plus d'informations sur l'accident.",Notifications.CHANNEL_ID,NotificationCompat.PRIORITY_HIGH);
 
-
+*/
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

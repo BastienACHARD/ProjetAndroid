@@ -15,20 +15,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.SplashScreenActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:configChanges="orientation|keyboardHidden|screenSize">
+        <activity android:name=".activities.AddCommentsActivity"></activity>
+        <activity
+            android:name=".activities.SplashScreenActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".MyFirebaseMessagingService"
-                 android:exported="false">
+
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="false">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"></action>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <activity
             android:name=".activities.MainActivity"
             android:theme="@style/AppTheme">
@@ -37,24 +43,24 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <meta-data
                 android:name="com.google.firebase.messaging.default_notification_icon"
-                android:resource="@drawable/alarm">
-            </meta-data>
+                android:resource="@drawable/alarm"></meta-data>
             <meta-data
                 android:name="com.google.firebase.messaging.default_notification_color"
-                android:resource="@color/colorPrimary">
-            </meta-data>
+                android:resource="@color/colorPrimary"></meta-data>
         </activity>
-
-
-        <activity android:name=".activities.ShowDetailActivity" android:parentActivityName=".activities.MainActivity"/>
-        <activity android:name=".activities.ParametersActivity" android:parentActivityName=".activities.MainActivity"/>
-
+        <activity
+            android:name=".activities.ShowDetailActivity"
+            android:parentActivityName=".activities.MainActivity" />
+        <activity
+            android:name=".activities.ParametersActivity"
+            android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.AddAccidentActivity"
-            android:theme="@style/AppTheme"
-            android:parentActivityName=".activities.MainActivity">
+            android:parentActivityName=".activities.MainActivity"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
