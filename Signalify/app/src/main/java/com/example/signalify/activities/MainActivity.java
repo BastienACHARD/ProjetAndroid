@@ -10,10 +10,12 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,6 +48,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private MapView map;
     private ImageView btnParam;
     private SearchView sv;
+    private GeoPoint myLocation;
     IMapController mapController;
     private View rootView;
     private LocationManager locationManager;
@@ -100,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         GeoPoint startPoint = new GeoPoint(43.6522, 7.00547);
         mapController.setCenter(startPoint);
         addMaker(startPoint);
+        checkProximity(startPoint);
 
 
         sv = findViewById(R.id.sv_location);
@@ -158,12 +165,50 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
             }
         });
+
+        subscribeToNotificationService();
+        subscribeToTheToken();
     }
+
+    private void subscribeToTheToken() {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if(!task.isSuccessful()) {
+                            Log.w("TAG", "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        String token = task.getResult().getToken();
+
+                        //String msg = getString(R.string.msg_token_fmt, token);
+                        Log.d("TAG", "Token : "+token);
+                        Toast.makeText(MainActivity.this, "Token : "+token, Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+    }
+
+    private void subscribeToNotificationService() {
+        FirebaseMessaging.getInstance().subscribeToTopic("Lemuel")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(MainActivity.this, "Souscription Avec Success !!!",Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(MainActivity.this, "Souscription Echouée !!!",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
 
     private void addMaker(GeoPoint startPoint) {
         Marker startMarker = new Marker(map);
         startMarker.setPosition(startPoint);
-        startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+        startMarker.setAnchor(Marker.ANCHOR_BOTTOM, Marker.ANCHOR_BOTTOM);
         startMarker.setIcon(getResources().getDrawable(R.mipmap.ic_nav));
         startMarker.setTitle("Position Actuelle");
         map.getOverlays().add(startMarker);
@@ -225,6 +270,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         map.onResume();
         sv.setQuery("", false);
         rootView.requestFocus();
+        subscribeToNotificationService();
+        subscribeToTheToken();
     }
 
     @Override
@@ -269,8 +316,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     @Override
     public void onLocationChanged(Location location) {
         GeoPoint center = new GeoPoint(location.getLatitude(), location.getLongitude());
-        mapController.animateTo(center);
-        addMaker(center);
+        myLocation = center;
+       // mapController.animateTo(center);
+       // addMaker(center);
+        checkProximity(center);
     }
 
     @Override
@@ -286,5 +335,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     @Override
     public void onProviderDisabled(String provider) {
 
+    }
+
+    private void checkProximity(GeoPoint center) {
+        for (Map.Entry mapentry : accidentsListe.entrySet()) {
+            Accident accident = (Accident) mapentry.getValue();
+            items.put((String) mapentry.getKey(),new OverlayItem(accident.getType(), accident.getDescription().get(0),
+                    new GeoPoint(accident.getLocation().getLatitude(), accident.getLocation().getLongitude())));
+            if((center.distanceToAsDouble(new GeoPoint(accident.getLocation().getLatitude(), accident.getLocation().getLongitude()))) == 100){
+                Log.d("PROXIMITY","Proche");
+            }
+        }
     }
 }

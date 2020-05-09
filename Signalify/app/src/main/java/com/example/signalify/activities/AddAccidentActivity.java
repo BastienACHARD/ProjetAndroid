@@ -5,6 +5,8 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.location.LocationListener;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -32,10 +34,11 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class AddAccidentActivity extends AppCompatActivity {
+public class AddAccidentActivity extends AppCompatActivity implements LocationListener {
 
 
     Accident accident;
+    GeoPoint myLocation;
     Random rand = new Random();
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
@@ -48,9 +51,7 @@ public class AddAccidentActivity extends AppCompatActivity {
     int id = 0;
 
 
-    public AddAccidentActivity() {
-
-    }
+    public AddAccidentActivity() { }
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -160,4 +161,23 @@ public class AddAccidentActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onLocationChanged(Location location) {
+        myLocation = new GeoPoint(location.getLatitude(),location.getLongitude());
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
 }
