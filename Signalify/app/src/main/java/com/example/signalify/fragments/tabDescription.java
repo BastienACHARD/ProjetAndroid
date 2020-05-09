@@ -5,19 +5,18 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.signalify.R;
-import com.example.signalify.models.RecycleViewAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -32,7 +31,9 @@ import java.util.ArrayList;
 public class tabDescription extends Fragment {
 
    String id;
-    ArrayList<String> Description =new ArrayList<>();
+    ArrayList<String> description =new ArrayList<>();
+
+
     public tabDescription() {
     }
 
@@ -48,22 +49,21 @@ public class tabDescription extends Fragment {
                {
                    DocumentSnapshot doc = task.getResult();
                    assert doc != null;
-                  Description = (ArrayList<String>) doc.getData().get("description");
-                   assert Description != null;
-                   String text= Description.get(0);
-                   ((TextView) root.findViewById(R.id.textView2)).setText(text);
-                   ArrayList<String> comment= new ArrayList<>();
-                 //  for(int i=1; i<Description.size();i++)
-                 //  comment.add(Description.get(i));
-                   comment.add("oklm");
-                   comment.add("oklm");
-                   comment.add("oklm");
-                   comment.add("oklm");
-                   comment.add("oklm");
+                  description = (ArrayList<String>) doc.getData().get("description");
+                   assert description != null;
+                   description.add("oklm yfkuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
+                   description.add("babe");
+                   description.add("tsrvvvvvvvvvvvvvvvvukgimuibhipuvydftyfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdddddddddddddddddddddddddddddddddddddddddddddddddd");
+                   description.add("tsrvvvvvvvvvvvvvvvvukgimuibhipuvydftyfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdddddddddddddddddddddddddddddddddddddddddddddddddd");
+                   description.add("tsrvvvvvvvvvvvvvvvvukgimuibhipuvydftyfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdddddddddddddddddddddddddddddddddddddddddddddddddd");
+                   description.add("tsrvvvvvvvvvvvvvvvvukgimuibhipuvydftyfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdddddddddddddddddddddddddddddddddddddddddddddddddd");
+                   description.add("tsrvvvvvvvvvvvvvvvvukgimuibhipuvydftyfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdddddddddddddddddddddddddddddddddddddddddddddddddd");
+                   description.add("tsrvvvvvvvvvvvvvvvvukgimuibhipuvydftyfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdddddddddddddddddddddddddddddddddddddddddddddddddd");
 
 
-                 //  RecyclerView recycler = root.findViewById(R.id.recycler);
-                  // RecycleViewAdapter adapter = new RecycleViewAdapter(comment,this);
+                   GridView list= root.findViewById(R.id.gridViewDescription);
+                  CustomAdapeter custom = new CustomAdapeter();
+                  list.setAdapter(custom);
 
 
                }
@@ -80,7 +80,7 @@ public class tabDescription extends Fragment {
         if(getArguments()!=null) id= getArguments().getString("overlay");
         View root =inflater.inflate(R.layout.fragment_tab_description, container, false);
         getAccidentDescription(id,root);
-        if(Description.size()>0)
+       if(description.size()>0)
         ((ImageView)root.findViewById(R.id.appel)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,7 +89,7 @@ public class tabDescription extends Fragment {
             }
         });
 
-        ( ( Button) root.findViewById(R.id.buttonAjout)).setOnClickListener(new View.OnClickListener() {
+        ( (Button) root.findViewById(R.id.buttonAjout)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast toast=Toast.makeText(getContext(),id,Toast.LENGTH_LONG);
@@ -97,5 +97,31 @@ public class tabDescription extends Fragment {
             }
         });
         return root;
+    }
+
+    class CustomAdapeter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return description.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view=getLayoutInflater().inflate(R.layout.card_item,null);
+            TextView text=(TextView)(view.findViewById(R.id.card_text));
+                text.setText(description.get(position));
+            return view;
+        }
     }
 }

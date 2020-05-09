@@ -76,6 +76,8 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
                 final Notifications notifications = new Notifications();
                 setAccident(type, location, descriptions, images);
                 addAccidentDataBase(accident);
+                Log.d("show me0", ""+ MainActivity.imageNotifChoice);
+                Log.d("show me0", ""+ MainActivity.radarState);
              //   showImage(images.get(rand.nextInt(images.size())));
                 //Log.d("Ordinaire", AccessAccidents.lastAddedKey);
                showImage("images/cr7.jpg");
