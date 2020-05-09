@@ -21,9 +21,10 @@
                 android:layout_margin="@dimen/frag_description_margin"
                 android:textSize="@dimen/txt_description_size"
                 android:text=""/>
-        <ListView
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
+        </androidx.recyclerview.widget.RecyclerView>
                 <Button
                     android:id="@+id/buttonAjout"
                     android:layout_width="match_parent"

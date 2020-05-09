@@ -11,17 +11,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.example.signalify.Notifications;
+import com.example.signalify.models.Notifications;
 import com.example.signalify.R;
 import com.example.signalify.models.Accident;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -75,7 +72,7 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
         valid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setAccident(type, location, descriptions, images);
+                setAccident(type, myLocation, descriptions, images);
                 addAccidentDataBase(accident);
              //   showImage(images.get(rand.nextInt(images.size())));
                 showImage("images/cr7.jpg");

@@ -1,4 +1,4 @@
-package com.example.signalify;
+package com.example.signalify.models;
 
 import android.app.Application;
 import android.app.NotificationChannel;

@@ -1,4 +1,4 @@
-package com.example.signalify;
+package com.example.signalify.models;
 
 import android.os.Bundle;
 import android.util.Log;
