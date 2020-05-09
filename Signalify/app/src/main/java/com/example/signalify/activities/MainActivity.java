@@ -301,6 +301,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         accidentState = sharedPreferences.getBoolean(param.SACCIDENT, true);
         embouteillageState = sharedPreferences.getBoolean(param.SEMBOUITEILLAGE,true);
         chantierState = sharedPreferences.getBoolean(param.SCHANTIER,true);
+        imageNotifChoice = sharedPreferences.getBoolean(param.SIMGNOTIF,false);
     }
 
     private void requestPermissionsIfNecessary(String[] permissions) {

@@ -12,15 +12,13 @@
     <string name="notification_channel_desc">This is a test canal</string>
     <string name="msg_token_fmt">Message</string>
     <string-array name="List">
-       <item>Routier</item>
-       <item>Chantier</item>
-       <item>Embouteillage</item>
-       <item>Radar</item>
-   </string-array>
+        <item>Routier</item>
+        <item>Chantier</item>
+        <item>Embouteillage</item>
+        <item>Radar</item>
+    </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
-
-
 
 
 </resources>

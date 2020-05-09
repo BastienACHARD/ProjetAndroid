@@ -120,7 +120,7 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
                 else
                    sendNotificationChannelNormal("Un nouvel incident a été déclaré.","Cliquez pour plus d'informations sur l'accident.",Notifications.CHANNEL_ID,NotificationCompat.PRIORITY_HIGH);
 
-
+*/
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
