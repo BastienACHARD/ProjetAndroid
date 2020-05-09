@@ -71,10 +71,12 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
         valid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setAccident(type, myLocation, descriptions, images);
+                final Notifications notifications = new Notifications();
+                setAccident(type, location, descriptions, images);
                 addAccidentDataBase(accident);
              //   showImage(images.get(rand.nextInt(images.size())));
-                showImage("images/cr7.jpg");
+
+               showImage("images/cr7.jpg");
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
@@ -103,7 +105,6 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
     }
 
     void showImage( String name) {
-        final Notifications notifications = new Notifications();
         StorageReference imgRef = storageReference.child(name);
         long MAXBYTES=1024*1024;
         imgRef.getBytes(MAXBYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -111,10 +112,10 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
             public void onSuccess(byte[] bytes) {
 
                 Bitmap  bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
-                if(MainActivity.imageNotifChoice)
-                notifications.sendNotificationChannel("Un nouvel incident a été déclaré.","Cliquez pour plus d'informations sur l'accident.", Notifications.CHANNEL_ID, NotificationCompat.PRIORITY_HIGH,bitmap);
+                if(true)
+              sendNotificationChannel("Un nouvel incident a été déclaré.","Cliquez pour plus d'informations sur l'accident.", Notifications.CHANNEL_ID, NotificationCompat.PRIORITY_HIGH,bitmap);
                 else
-                    notifications.sendNotificationChannelNormal("Un nouvel incident a été déclaré.","Cliquez pour plus d'informations sur l'accident.",Notifications.CHANNEL_ID,NotificationCompat.PRIORITY_HIGH);
+                   sendNotificationChannelNormal("Un nouvel incident a été déclaré.","Cliquez pour plus d'informations sur l'accident.",Notifications.CHANNEL_ID,NotificationCompat.PRIORITY_HIGH);
 
 
             }
@@ -125,6 +126,37 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
             }
         });
 
+    }
+    public void sendNotificationChannelNormal(String title, String message, String channelId, int priority) {
+        NotificationCompat.Builder notification=new NotificationCompat.Builder(getApplicationContext(),channelId)
+                .setSmallIcon(R.drawable.alarm)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setPriority(priority);
+        NotificationManagerCompat.from(this).notify(1,notification.build());
+    }
+    public void sendNotificationChannel(String title, String message, String channelId, int priority, Bitmap bitmap) {
+        Intent activityIntent = new Intent(this, AddAccidentActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this,
+                0, activityIntent, 0);
+
+
+
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(getApplicationContext(), channelId)
+                .setContentTitle(title)
+                .setContentText( message)
+                .setPriority(priority)
+                .setStyle(new NotificationCompat.BigPictureStyle()
+                        .bigPicture(bitmap)
+                        .bigLargeIcon(null))
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setContentIntent(contentIntent)
+                .setAutoCancel(true)
+                .setSmallIcon(R.drawable.alarm)
+                .setPriority(priority)
+                .setOnlyAlertOnce(true);
+
+        NotificationManagerCompat.from(this).notify(0, notification.build());
     }
 
 

@@ -11,6 +11,7 @@ import android.os.Build;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.example.signalify.R;
 import com.example.signalify.activities.AddAccidentActivity;
 
 import java.util.Objects;
@@ -50,27 +51,5 @@ public class Notifications extends Application {
                 .setPriority(priority);
         NotificationManagerCompat.from(this).notify(++id,notification.build());
     }
-    public void sendNotificationChannel(String title, String message, String channelId, int priority, Bitmap bitmap) {
-        Intent activityIntent = new Intent(this, AddAccidentActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this,
-                0, activityIntent, 0);
 
-
-
-        NotificationCompat.Builder notification = new NotificationCompat.Builder(getApplicationContext(), channelId)
-                .setContentTitle(title)
-                .setContentText( message)
-                .setPriority(priority)
-                .setStyle(new NotificationCompat.BigPictureStyle()
-                        .bigPicture(bitmap)
-                        .bigLargeIcon(null))
-                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                .setContentIntent(contentIntent)
-                .setAutoCancel(true)
-                .setSmallIcon(R.drawable.alarm)
-                .setPriority(priority)
-                .setOnlyAlertOnce(true);
-
-        NotificationManagerCompat.from(this).notify(++id, notification.build());
-    }
 }

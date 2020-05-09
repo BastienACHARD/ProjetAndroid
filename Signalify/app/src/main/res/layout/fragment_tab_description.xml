@@ -22,6 +22,7 @@
                 android:textSize="@dimen/txt_description_size"
                 android:text=""/>
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </androidx.recyclerview.widget.RecyclerView>
