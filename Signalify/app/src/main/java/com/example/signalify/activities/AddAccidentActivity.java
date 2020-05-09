@@ -48,7 +48,6 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
     GeoPoint location = new GeoPoint(43.65620, 7.00517);
     ArrayList<String> descriptions = new ArrayList<>();
     ArrayList<String> images = new ArrayList<>();
-    int id = 0;
 
 
     public AddAccidentActivity() { }
@@ -105,38 +104,9 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
     public void addAccidentDataBase(Accident accident) {
         db.collection("Accidents").add(accident);
     }
-    private void sendNotificationChannelNormal(String title, String message, String channelId, int priority) {
-        NotificationCompat.Builder notification=new NotificationCompat.Builder(getApplicationContext(),channelId)
-                .setSmallIcon(R.drawable.logoaccident)
-                .setContentTitle(title)
-                .setContentText(message)
-                .setPriority(priority);
-        NotificationManagerCompat.from(this).notify(++id,notification.build());
-    }
-    private void sendNotificationChannel(String title, String message, String channelId, int priority, Bitmap bitmap) {
-        Intent activityIntent = new Intent(this, AddAccidentActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this,
-                0, activityIntent, 0);
 
-
-
-        NotificationCompat.Builder notification = new NotificationCompat.Builder(getApplicationContext(), channelId)
-                .setContentTitle(title)
-                .setContentText( message)
-                .setPriority(priority)
-                .setStyle(new NotificationCompat.BigPictureStyle()
-                        .bigPicture(bitmap)
-                        .bigLargeIcon(null))
-                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                .setContentIntent(contentIntent)
-                .setAutoCancel(true)
-                .setSmallIcon(R.drawable.logoaccident)
-                .setPriority(priority)
-                .setOnlyAlertOnce(true);
-
-        NotificationManagerCompat.from(this).notify(++id, notification.build());
-    }
     void showImage( String name) {
+        final Notifications notifications = new Notifications();
         StorageReference imgRef = storageReference.child(name);
         long MAXBYTES=1024*1024;
         imgRef.getBytes(MAXBYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -145,9 +115,9 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
 
                 Bitmap  bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
                 if(MainActivity.imageNotifChoice)
-                sendNotificationChannel("","Un nouvel incident a été déclaré", Notifications.CHANNEL_3_ID, NotificationCompat.PRIORITY_HIGH,bitmap);
+                notifications.sendNotificationChannel("Un nouvel incident a été déclaré.","Cliquez pour plus d'informations sur l'accident.", Notifications.CHANNEL_ID, NotificationCompat.PRIORITY_HIGH,bitmap);
                 else
-                    sendNotificationChannelNormal("","Un nouvel incident a été déclaré",Notifications.CHANNEL_1_ID,NotificationCompat.PRIORITY_LOW);
+                    notifications.sendNotificationChannelNormal("Un nouvel incident a été déclaré.","Cliquez pour plus d'informations sur l'accident.",Notifications.CHANNEL_ID,NotificationCompat.PRIORITY_HIGH);
 
 
             }
