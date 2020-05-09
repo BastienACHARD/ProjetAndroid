@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.example.signalify.databaseAccess.AccessAccidents;
 import com.example.signalify.models.Notifications;
 import com.example.signalify.R;
 import com.example.signalify.models.Accident;
@@ -75,7 +77,7 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
                 setAccident(type, location, descriptions, images);
                 addAccidentDataBase(accident);
              //   showImage(images.get(rand.nextInt(images.size())));
-
+                //Log.d("Ordinaire", AccessAccidents.lastAddedKey);
                showImage("images/cr7.jpg");
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
@@ -92,8 +94,6 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
                 finish();
             }
         });
-
-
     }
 
     public void setAccident(String type, GeoPoint location, ArrayList<String> description, ArrayList<String> image) {
@@ -116,8 +116,6 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
               sendNotificationChannel("Un nouvel incident a été déclaré.","Cliquez pour plus d'informations sur l'accident.", Notifications.CHANNEL_ID, NotificationCompat.PRIORITY_HIGH,bitmap);
                 else
                    sendNotificationChannelNormal("Un nouvel incident a été déclaré.","Cliquez pour plus d'informations sur l'accident.",Notifications.CHANNEL_ID,NotificationCompat.PRIORITY_HIGH);
-
-*/
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -128,17 +126,23 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
 
     }
     public void sendNotificationChannelNormal(String title, String message, String channelId, int priority) {
+        Intent intent=new Intent(getApplicationContext(), ShowDetailActivity.class);
+        intent.putExtra("code", AccessAccidents.lastAddedKey);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),0,intent,0);
         NotificationCompat.Builder notification=new NotificationCompat.Builder(getApplicationContext(),channelId)
                 .setSmallIcon(R.drawable.alarm)
                 .setContentTitle(title)
                 .setContentText(message)
-                .setPriority(priority);
+                .setPriority(priority)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent);
         NotificationManagerCompat.from(this).notify(1,notification.build());
     }
     public void sendNotificationChannel(String title, String message, String channelId, int priority, Bitmap bitmap) {
-        Intent activityIntent = new Intent(this, AddAccidentActivity.class);
+        Intent intent=new Intent(getApplicationContext(), ShowDetailActivity.class);
+        intent.putExtra("code", AccessAccidents.lastAddedKey);
         PendingIntent contentIntent = PendingIntent.getActivity(this,
-                0, activityIntent, 0);
+                0, intent, 0);
 
 
 
@@ -154,7 +158,8 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
                 .setAutoCancel(true)
                 .setSmallIcon(R.drawable.alarm)
                 .setPriority(priority)
-                .setOnlyAlertOnce(true);
+                .setOnlyAlertOnce(true)
+                .setAutoCancel(true);
 
         NotificationManagerCompat.from(this).notify(0, notification.build());
     }
