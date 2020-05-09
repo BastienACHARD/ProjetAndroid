@@ -52,7 +52,8 @@ public class ParametersActivity  extends AppCompatActivity {
         btnReinit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                radarState=accidentState=embouteillageState=chantierState=imgNotifState=true;
+                radarState=accidentState=embouteillageState=chantierState=true;
+                imgNotifState=false;
                 updateSwitchsState();
             }
         });
@@ -80,7 +81,7 @@ public class ParametersActivity  extends AppCompatActivity {
         accidentState = sharedPreferences.getBoolean(SACCIDENT, true);
         embouteillageState = sharedPreferences.getBoolean(SEMBOUITEILLAGE,true);
         chantierState = sharedPreferences.getBoolean(SCHANTIER,true);
-        imgNotifState = sharedPreferences.getBoolean(SIMGNOTIF,true);
+        imgNotifState = sharedPreferences.getBoolean(SIMGNOTIF,false);
     }
 
     public void updateSwitchsState(){
