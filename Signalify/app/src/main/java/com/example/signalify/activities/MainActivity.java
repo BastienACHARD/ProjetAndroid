@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         GeoPoint startPoint = new GeoPoint(43.6522, 7.00547);
         mapController.setCenter(startPoint);
         addMaker(startPoint);
-        checkProximity(startPoint);
+        //checkProximity(startPoint);
 
 
         sv = findViewById(R.id.sv_location);
@@ -166,8 +166,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             }
         });
 
-        subscribeToNotificationService();
-        subscribeToTheToken();
+        //subscribeToNotificationService();
+        //subscribeToTheToken();
     }
 
     private void subscribeToTheToken() {
@@ -270,8 +270,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         map.onResume();
         sv.setQuery("", false);
         rootView.requestFocus();
-        subscribeToNotificationService();
-        subscribeToTheToken();
+        //subscribeToNotificationService();
+        //subscribeToTheToken();
     }
 
     @Override
@@ -319,7 +319,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         myLocation = center;
        // mapController.animateTo(center);
        // addMaker(center);
-        checkProximity(center);
+        //checkProximity(center);
     }
 
     @Override
@@ -342,7 +342,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             Accident accident = (Accident) mapentry.getValue();
             items.put((String) mapentry.getKey(),new OverlayItem(accident.getType(), accident.getDescription().get(0),
                     new GeoPoint(accident.getLocation().getLatitude(), accident.getLocation().getLongitude())));
-            if((center.distanceToAsDouble(new GeoPoint(accident.getLocation().getLatitude(), accident.getLocation().getLongitude()))) == 100){
+            double distance = center.distanceToAsDouble(new GeoPoint(accident.getLocation().getLatitude(), accident.getLocation().getLongitude()));
+            if(distance <= 10000000){
                 Log.d("PROXIMITY","Proche");
             }
         }
