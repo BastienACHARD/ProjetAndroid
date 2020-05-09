@@ -27,7 +27,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
-import com.example.signalify.Notifications;
+import com.example.signalify.models.Notifications;
 import com.example.signalify.R;
 import com.example.signalify.databaseAccess.AccessAccidents;
 import com.example.signalify.models.Accident;

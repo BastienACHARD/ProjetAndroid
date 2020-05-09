@@ -2,16 +2,16 @@ package com.example.signalify.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.GridView;
-import android.widget.ListView;
 
-import com.example.signalify.PageAdapter;
+import com.example.signalify.models.PageAdapter;
 import com.example.signalify.R;
+import com.example.signalify.models.RecycleViewAdapter;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 public class ShowDetailActivity extends AppCompatActivity {
