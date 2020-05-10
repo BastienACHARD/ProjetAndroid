@@ -11,7 +11,6 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -22,12 +21,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
-                android:clickable="true"
+                android:clickable="false"
                 android:columnWidth="@dimen/item_width"
                 android:drawSelectorOnTop="true"
                 android:focusable="true"
@@ -40,17 +35,21 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="183dp"
-            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_weight="2"
-            android:orientation="horizontal"
-            android:layout_gravity="center">
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/buttonAjout"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:background="@drawable/custom_button1"
+                android:clickable="false"
+                android:minWidth="300dp"
                 android:text="Ajouter un commentaire"
                 android:textColor="#000000" />
 
@@ -58,8 +57,8 @@
                 android:id="@+id/appel"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="bottom|center"
-                android:layout_marginTop="12dp"
+                android:maxWidth="50dp"
+                android:minWidth="50dp"
                 android:src="@drawable/tel" />
 
 

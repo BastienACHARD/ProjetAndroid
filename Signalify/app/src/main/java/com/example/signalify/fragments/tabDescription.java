@@ -17,6 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.signalify.R;
+import com.example.signalify.activities.AddCommentsActivity;
+import com.example.signalify.activities.ShowDetailActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -94,6 +96,9 @@ public class tabDescription extends Fragment {
             public void onClick(View v) {
                 Toast toast=Toast.makeText(getContext(),id,Toast.LENGTH_LONG);
                 toast.show();
+                Intent intent=new Intent(getContext(), AddCommentsActivity.class);
+                intent.putExtra("code", id);
+                startActivity(intent);
             }
         });
         return root;
