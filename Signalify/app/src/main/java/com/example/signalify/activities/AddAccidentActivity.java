@@ -10,6 +10,7 @@ import android.location.LocationListener;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -62,7 +63,7 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
     ArrayList<String> descriptions = new ArrayList<>();
     ArrayList<String> images = new ArrayList<>();
 
-
+    TextToSpeech t1;
     public AddAccidentActivity() { }
 
     @SuppressLint("RestrictedApi")
@@ -70,8 +71,10 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         setContentView(R.layout.add_accident);
         voiceButton= (ImageButton) (findViewById(R.id.voice));
+        Button tof= (Button) (findViewById(R.id.photo));
         description =(EditText) (findViewById(R.id.editText));
         firebaseStorage= FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
@@ -88,6 +91,24 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
             openDialog();
             Dialog.addAccident++;
         }
+        t1=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status==TextToSpeech.SUCCESS)
+                    t1.setLanguage(Locale.FRENCH);
+                t1.setLanguage(Locale.FRENCH);
+
+            }
+        });
+
+        tof.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            String text= description.getText().toString();
+                t1.speak(text,TextToSpeech.QUEUE_FLUSH,null);
+
+            }
+        });
         voiceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,6 +144,15 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
                 finish();
             }
         });
+    }
+
+    public void onPause() {
+
+        if (t1 != null) {
+            t1.stop();
+            t1.shutdown();
+        }
+        super.onPause();
     }
 
     private  void speak()
