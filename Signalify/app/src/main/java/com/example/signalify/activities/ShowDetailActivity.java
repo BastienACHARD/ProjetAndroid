@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.GridView;
 
+import com.example.signalify.fragments.Dialog;
 import com.example.signalify.models.PageAdapter;
 import com.example.signalify.R;
 import com.google.android.material.tabs.TabItem;
@@ -40,8 +41,11 @@ public class ShowDetailActivity extends AppCompatActivity {
         viewPage.setAdapter(pageAdapter);
         getSupportActionBar().setTitle("Détails de l'incident");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
+            if(Dialog.showActivity==0)
+            {
+                openDialog();
+                Dialog.showActivity++;
+            }
       //  listview.setAdapter(custom);
 
 
@@ -74,6 +78,10 @@ public class ShowDetailActivity extends AppCompatActivity {
 
     }
 
-
+    public void openDialog()
+    {
+        Dialog dialog =new Dialog();
+        dialog.show(getSupportFragmentManager(),"the dialog");
+    }
 
 }

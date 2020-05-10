@@ -8,21 +8,30 @@ import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.signalify.databaseAccess.AccessAccidents;
+import com.example.signalify.fragments.Dialog;
 import com.example.signalify.models.Notifications;
 import com.example.signalify.R;
 import com.example.signalify.models.Accident;
+import com.example.signalify.models.Utilities;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,14 +39,19 @@ import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Random;
 
-public class AddAccidentActivity extends AppCompatActivity implements LocationListener {
+public class AddAccidentActivity extends AppCompatActivity implements LocationListener, Utilities {
 
 
     Accident accident;
     GeoPoint myLocation;
+    EditText description;
+    ImageButton voiceButton;
     Random rand = new Random();
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
@@ -54,10 +68,13 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
     @SuppressLint("RestrictedApi")
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.add_accident);
+        voiceButton= (ImageButton) (findViewById(R.id.voice));
+        description =(EditText) (findViewById(R.id.editText));
         firebaseStorage= FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_accident);
 
         getSupportActionBar().setTitle("Ajouter un incident");
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
@@ -66,6 +83,17 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
         Button cancel = (Button) findViewById(R.id.cancel);
         final EditText description = (EditText) findViewById(R.id.editText);
 
+        if(Dialog.addAccident==0)
+        {
+            openDialog();
+            Dialog.addAccident++;
+        }
+        voiceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                speak();
+            }
+        });
 
         descriptions.add(description.getText().toString().trim());
         images.add("image1");
@@ -97,6 +125,21 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
         });
     }
 
+    private  void speak()
+    {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Dites quelque chose");
+        try {
+            startActivityForResult(intent, REQUEST_CODE_SPEECH);
+        } catch (Exception e)
+        {
+            Toast.makeText(getApplicationContext(), ""+e.getMessage(),Toast.LENGTH_LONG).show();
+        }
+    }
+
     public void setAccident(String type, GeoPoint location, ArrayList<String> description, ArrayList<String> image) {
         accident = new Accident(type, location, description, image);
     }
@@ -105,7 +148,24 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
         db.collection("Accidents").add(accident);
     }
 
-    void showImage( String name) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode)
+        {
+            case REQUEST_CODE_SPEECH: {
+                if(resultCode == RESULT_OK && data!= null)
+                {
+
+                         ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                         description.setText(result.get(0),TextView.BufferType.EDITABLE);
+                }
+                break;
+            }
+        }
+    }
+
+    void showImage(String name) {
         StorageReference imgRef = storageReference.child(name);
         long MAXBYTES=1024*1024;
         imgRef.getBytes(MAXBYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -113,7 +173,7 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
             public void onSuccess(byte[] bytes) {
 
                 Bitmap  bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
-                if(true)
+                if(MainActivity.imageNotifChoice)
               sendNotificationChannel("Un nouvel incident a été déclaré.","Cliquez pour plus d'informations sur l'accident.", Notifications.CHANNEL_ID, NotificationCompat.PRIORITY_HIGH,bitmap);
                 else
                    sendNotificationChannelNormal("Un nouvel incident a été déclaré.","Cliquez pour plus d'informations sur l'accident.",Notifications.CHANNEL_ID,NotificationCompat.PRIORITY_HIGH);
@@ -185,4 +245,10 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
     public void onProviderDisabled(String provider) {
 
     }
+    public void openDialog()
+    {
+        Dialog dialog =new Dialog();
+        dialog.show(getSupportFragmentManager(),"the dialog");
+    }
+
 }

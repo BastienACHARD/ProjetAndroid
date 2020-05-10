@@ -106,7 +106,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         setContentView(R.layout.activity_main);
         map = findViewById(R.id.map);
         map.setTileSource(TileSourceFactory.MAPNIK);    //render
-        map.setBuiltInZoomControls(true);               // zoomable
+        map.setBuiltInZoomControls(true);
+        Log.d("checkk",""+MainActivity.imageNotifChoice);// zoomable
         map.setMultiTouchControls(true);//  zoom with 2 fingers
         requestPermissionsIfNecessary(new String[]{
                 // if you need to show the current location, uncomment the line below
@@ -140,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                        e.printStackTrace();
                     }
                     if(adressList.size()<=0) {
-                        Toast.makeText(getApplicationContext(),"Adress introuvable",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),"Adresse introuvable",Toast.LENGTH_LONG).show();
 
                     }
                     else {
