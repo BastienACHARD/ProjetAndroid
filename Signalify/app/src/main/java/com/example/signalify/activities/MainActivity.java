@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -58,7 +60,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.type.LatLng;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -102,7 +106,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         setContentView(R.layout.activity_main);
         map = findViewById(R.id.map);
         map.setTileSource(TileSourceFactory.MAPNIK);    //render
-        map.setBuiltInZoomControls(true);               // zoomable
+        map.setBuiltInZoomControls(true);
+        Log.d("checkk",""+MainActivity.imageNotifChoice);// zoomable
         map.setMultiTouchControls(true);//  zoom with 2 fingers
         requestPermissionsIfNecessary(new String[]{
                 // if you need to show the current location, uncomment the line below
@@ -121,6 +126,41 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         sv = findViewById(R.id.sv_location);
         rootView = findViewById(R.id.root_layout);
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                String location = sv.getQuery().toString();
+                List<Address> adressList=null;
+                if(location !=null || !location.equals(""))
+                {
+                    Geocoder geocoder = new Geocoder(MainActivity.this);
+                    try{
+                        adressList = geocoder.getFromLocationName(location,1);
+
+                    } catch (IOException e) {
+                       e.printStackTrace();
+                    }
+                    if(adressList.size()<=0) {
+                        Toast.makeText(getApplicationContext(),"Adresse introuvable",Toast.LENGTH_LONG).show();
+
+                    }
+                    else {
+                        Address adress = adressList.get(0);
+
+                        GeoPoint geo = new GeoPoint(adress.getLatitude(), adress.getLongitude());
+
+                        addAnyMarker(geo, location);
+                        map.getController().animateTo(geo);
+                    }
+                }
+                return  false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
 
         //create a new item to draw on the map
         //your items
@@ -252,6 +292,28 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         map.invalidate();
     }
 
+    public void addAnyMarker(GeoPoint geopoint, String loc)
+    {
+        ArrayList<OverlayItem> items= new ArrayList<>();
+        OverlayItem searched =new OverlayItem(loc,"", geopoint);
+        items.add(searched);
+        ItemizedOverlayWithFocus<OverlayItem> overLay=new ItemizedOverlayWithFocus<OverlayItem>(getApplicationContext(), items,
+                new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
+                    @Override
+                    public boolean onItemSingleTapUp(int index, OverlayItem item) {
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onItemLongPress(int index, OverlayItem item) {
+                        return false;
+                    }
+                });
+        overLay.setFocusItemsOnTap(true);
+        map.getOverlays().add(overLay);
+
+    }
+
     public void setItemsOnMap(final HashMap<String, OverlayItem> items){
         ArrayList<OverlayItem> list = new ArrayList<OverlayItem>(items.values());
         Log.d("Tab", String.valueOf(items.values()));
@@ -354,7 +416,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     }
 
     @Override
-    public void onProviderDisabled(String provider) {
+    public void onProviderDisabled(String provider)
+
+
+    {
 
     }
 
