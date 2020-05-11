@@ -2,24 +2,34 @@ package com.example.signalify.activities;
 
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Switch;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.signalify.models.Notifications;
 import com.example.signalify.R;
+import com.example.signalify.fragments.PictureFragment;
 import com.example.signalify.models.Accident;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,24 +37,31 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class AddAccidentActivity extends AppCompatActivity implements LocationListener {
+public class AddAccidentActivity extends AppCompatActivity implements LocationListener,IPictureActivity {
 
-
+    private PictureFragment pictureFragment;
+    FirebaseStorage firebaseStorage;
     Accident accident;
     GeoPoint myLocation;
     Random rand = new Random();
-    private FirebaseStorage firebaseStorage;
-    private StorageReference storageReference;
+    StorageReference storageReference;
     Spinner spinner;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    String type = "Accident";
+    String type;
     GeoPoint location = new GeoPoint(43.65620, 7.00517);
     ArrayList<String> descriptions = new ArrayList<>();
     ArrayList<String> images = new ArrayList<>();
+    int id = 0;
+
+    StorageReference mStorageRef;
+
+    public Uri imguri;
 
 
     public AddAccidentActivity() { }
@@ -52,10 +69,20 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
     @SuppressLint("RestrictedApi")
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        firebaseStorage= FirebaseStorage.getInstance();
+        firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
+        mStorageRef = FirebaseStorage.getInstance().getReference("Images");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_accident);
+
+        pictureFragment = (PictureFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPicture);
+        if(pictureFragment == null) {
+            pictureFragment = new PictureFragment();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragmentPicture, pictureFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
 
         getSupportActionBar().setTitle("Ajouter un incident");
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
@@ -71,12 +98,15 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
         valid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                type = spinner.getTransitionName();
+                descriptions.add(description.getText().toString().trim());
+                FileUploader();
+                setAccident(type, myLocation, descriptions, images);
                 final Notifications notifications = new Notifications();
                 setAccident(type, location, descriptions, images);
                 addAccidentDataBase(accident);
              //   showImage(images.get(rand.nextInt(images.size())));
-
-               showImage("images/cr7.jpg");
+                //showImage("images/cr7.jpg");
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
@@ -93,7 +123,35 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
             }
         });
 
+    }
 
+    private String getExtension(Uri uri){
+        ContentResolver cr = getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(cr.getType(uri));
+    }
+
+    private StorageReference getStorageReference(){
+        return mStorageRef.child(System.currentTimeMillis()+"."+getExtension(imguri));
+    }
+
+    private void FileUploader(){
+        getStorageReference().putFile(imguri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // Get a URL to the uploaded content
+                        // Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                        images.add(getStorageReference().toString());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                        // ...
+                    }
+                });
     }
 
     public void setAccident(String type, GeoPoint location, ArrayList<String> description, ArrayList<String> image) {
@@ -179,4 +237,40 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
     public void onProviderDisabled(String provider) {
 
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode){
+            case REQUEST_CAMERA:{
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "CAMERA authorization granted", Toast.LENGTH_LONG);
+                    toast.show();
+                    pictureFragment.takePicture();
+                } else {
+                    Toast toast = Toast.makeText(getApplicationContext(), "CAMERA authorization NOT granted", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+            } break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CAMERA) {
+            if (resultCode == RESULT_OK) {
+                imguri = (Uri) data.getData();
+                Bitmap picture = (Bitmap) data.getExtras().get("data");
+                pictureFragment.setImage(picture);
+            } else if ( resultCode == RESULT_CANCELED) {
+                Toast toast = Toast.makeText(getApplicationContext(), "Picture canceled", Toast.LENGTH_LONG);
+                toast.show();
+            } else {
+                Toast toast = Toast.makeText(getApplicationContext(), "action failed", Toast.LENGTH_LONG);
+                toast.show();
+            }
+        }
+    }
+
+
 }

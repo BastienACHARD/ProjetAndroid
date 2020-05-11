@@ -10,33 +10,29 @@
 
     <Spinner
         android:id="@+id/spiner"
-        android:layout_width="267dp"
+        android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="10dp"
         android:entries="@array/List"
         android:gravity="center_horizontal" />
 
     <EditText
         android:id="@+id/editText"
         android:layout_width="match_parent"
-        android:layout_height="264dp"
+        android:layout_height="150dp"
         android:layout_marginTop="15dp"
         android:background="@drawable/custom_edit"
         android:hint="Entrer une description"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/valid" />
-    <Button
-        android:layout_marginTop="19dp"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal"
-        android:id="@+id/photo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/frag_description_margin"
-        android:text="Ajouter une photo"
-        android:textColor="#000000" />
 
+    <FrameLayout
+        android:id="@+id/fragmentPicture"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"/>
 
     <LinearLayout
     android:layout_width="match_parent"
