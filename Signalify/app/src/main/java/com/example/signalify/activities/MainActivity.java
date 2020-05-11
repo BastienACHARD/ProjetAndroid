@@ -158,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
             @Override
             public boolean onQueryTextChange(String newText) {
+
                 return false;
             }
         });

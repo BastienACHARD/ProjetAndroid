@@ -6,9 +6,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
@@ -25,6 +28,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 
 /**
@@ -33,10 +37,20 @@ import java.util.ArrayList;
 public class tabDescription extends Fragment {
 
    String id;
+    TextToSpeech t1;
     ArrayList<String> description =new ArrayList<>();
 
 
     public tabDescription() {
+    }
+
+    public void onPause() {
+
+        if (t1 != null) {
+            t1.stop();
+            t1.shutdown();
+        }
+        super.onPause();
     }
 
    private void getAccidentDescription(String id, final View root){
@@ -67,6 +81,16 @@ public class tabDescription extends Fragment {
                   CustomAdapeter custom = new CustomAdapeter();
                   list.setAdapter(custom);
 
+                   list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                       @Override
+                       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                           String text = description.get(position);
+                           Log.d("le texte a lire", text);
+                          t1.speak(text,TextToSpeech.QUEUE_FLUSH,null);
+                       }
+                   });
+
 
                }
 
@@ -91,6 +115,17 @@ public class tabDescription extends Fragment {
             }
         });
 
+        t1=new TextToSpeech(ShowDetailActivity.context, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status==TextToSpeech.SUCCESS)
+                    t1.setLanguage(Locale.FRENCH);
+                t1.setLanguage(Locale.FRENCH);
+
+            }
+        });
+
+
         ( (Button) root.findViewById(R.id.buttonAjout)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,6 +134,8 @@ public class tabDescription extends Fragment {
                 Intent intent=new Intent(getContext(), AddCommentsActivity.class);
                 intent.putExtra("code", id);
                 startActivity(intent);
+
+
             }
         });
         return root;
