@@ -1,17 +1,17 @@
 package com.example.signalify.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.GridView;
 
+import com.example.signalify.fragments.Dialog;
 import com.example.signalify.models.PageAdapter;
 import com.example.signalify.R;
-import com.example.signalify.models.RecycleViewAdapter;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 public class ShowDetailActivity extends AppCompatActivity {
@@ -21,12 +21,14 @@ public class ShowDetailActivity extends AppCompatActivity {
     private ViewPager viewPage;
     public PageAdapter pageAdapter;
     private GridView gridView;
+    public static Context context;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_detail_activity);
+        this.context= this;
         this.gridView =(GridView) (findViewById(R.id.gridView)) ;
         this.tabLayOut=(TabLayout)(findViewById(R.id.tablayout));
         tabMessage=(TabItem)(findViewById(R.id.messageTab));
@@ -39,8 +41,11 @@ public class ShowDetailActivity extends AppCompatActivity {
         viewPage.setAdapter(pageAdapter);
         getSupportActionBar().setTitle("Détails de l'incident");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
+            if(Dialog.showActivity==0)
+            {
+                openDialog();
+                Dialog.showActivity++;
+            }
       //  listview.setAdapter(custom);
 
 
@@ -73,6 +78,10 @@ public class ShowDetailActivity extends AppCompatActivity {
 
     }
 
-
+    public void openDialog()
+    {
+        Dialog dialog =new Dialog();
+        dialog.show(getSupportFragmentManager(),"the dialog");
+    }
 
 }
