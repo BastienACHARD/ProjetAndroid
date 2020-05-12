@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         mapController = map.getController();
         mapController.setZoom(18.0);
-        GeoPoint startPoint = new GeoPoint(43.6522, 7.00547);
+        final GeoPoint startPoint = new GeoPoint(43.6522, 7.00547);
         mapController.setCenter(startPoint);
         addMaker(startPoint);
         myLocation = startPoint;
@@ -126,13 +126,15 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         sv = findViewById(R.id.sv_location);
         rootView = findViewById(R.id.root_layout);
+
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 String location = sv.getQuery().toString();
                 List<Address> adressList=null;
-                if(location !=null || !location.equals(""))
+                if(location !=null )
                 {
+
                     Geocoder geocoder = new Geocoder(MainActivity.this);
                     try{
                         adressList = geocoder.getFromLocationName(location,1);
@@ -148,16 +150,21 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         Address adress = adressList.get(0);
 
                         GeoPoint geo = new GeoPoint(adress.getLatitude(), adress.getLongitude());
+                        
 
                         addAnyMarker(geo, location);
                         map.getController().animateTo(geo);
                     }
                 }
+
                 return  false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
+
+                if(newText.equals(""))
+                    map.getController().animateTo(myLocation);
 
                 return false;
             }
@@ -180,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 setItemsOnMap(items);
                 if(!check){
                     check = true;
-                    Log.d("OOOOOOOO", "C : "+check);
+
                     String accidentKey = checkProximity(myLocation);
                     if( accidentKey != null) generateNotification(accidentKey);
                 }
