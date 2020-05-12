@@ -1,6 +1,7 @@
 package com.example.signalify.activities;
 
 import android.Manifest;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -69,6 +70,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import static com.example.signalify.activities.INotificationAction.NOTIFY_ID;
+import static com.example.signalify.activities.INotificationAction.NO_ACTION;
+import static com.example.signalify.activities.INotificationAction.YES_ACTION;
+import static com.example.signalify.models.Notifications.CHANNEL_ID;
 // essai de suivre le tuto : https://github.com/osmdroid/osmdroid/wiki/How-to-use-the-osmdroid-library
 // et https://stackoverflow.com/questions/18302603/where-do-i-place-the-assets-folder-in-android-studio?rq=1
 
@@ -91,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     HashMap<String, OverlayItem> items = new HashMap<String, OverlayItem>();
     private MyLocationNewOverlay mLocationOverlay;
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
+    private NotificationManager notificationManager;
 
     public static boolean radarState, accidentState, chantierState, embouteillageState, imageNotifChoice;
 
@@ -191,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     check = true;
 
                     String accidentKey = checkProximity(myLocation);
-                    if( accidentKey != null) generateNotification(accidentKey);
+                    if( accidentKey != null) showActionButtonsNotification(accidentKey);
                 }
             }
         });
@@ -234,9 +241,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             }
         });
 
-        //subscribeToNotificationService();
-        //subscribeToTheToken();
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
     }
+
+
 
     private void subscribeToTheToken() {
         FirebaseInstanceId.getInstance().getInstanceId()
@@ -473,14 +481,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         return null;
     }
 
-    public void generateNotification(String accidentKey){
+    public void generateNotifiction(String accidentKey){
         Intent intent=new Intent(getApplicationContext(), ShowDetailActivity.class);
         intent.putExtra("code", accidentKey);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);
-        NotificationCompat.Builder notification=new NotificationCompat.Builder(getApplicationContext(),Notifications.CHANNEL_ID)
+        NotificationCompat.Builder notification=new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
                 .setSmallIcon(R.drawable.alarm)
-                .setContentTitle("Vous êtes proche d'un accident !")
-                .setContentText("Vous êtes à 100 Mètres d'un accident. Cliquez pour en savoir plus.")
+                .setContentTitle(" Vous êtes proche d'un accident !")
+                .setContentText(" Vous êtes à 100 Mètres d'un accident. Cliquez pour en savoir plus.")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
@@ -488,5 +496,63 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         NotificationManagerCompat.from(this).notify(++id,notification.build());
     }
 
+    private Intent getNotificationIntent(){
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        return intent;
+    }
+
+    private void showActionButtonsNotification(String accidentKey){
+        Intent intent=new Intent(getApplicationContext(), ShowDetailActivity.class);
+        intent.putExtra("code", accidentKey);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);
+        Intent yesIntent = getNotificationIntent();
+        yesIntent.setAction(YES_ACTION);
+
+        Intent noIntent = getNotificationIntent();
+        yesIntent.setAction(NO_ACTION);
+
+        Notification notification = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
+                .setContentIntent(pendingIntent)
+                .setSmallIcon(R.drawable.alarm)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentTitle("Vous êtes proche d'un accident !")
+                .setContentText(" Vous êtes à 100 Mètres d'un accident.")
+                .setWhen(System.currentTimeMillis())
+                .setAutoCancel(true)
+                .addAction(new NotificationCompat.Action(
+                        R.drawable.ic_stat_name,
+                        getString(R.string.yes),
+                        PendingIntent.getActivity(this, 0, yesIntent, PendingIntent.FLAG_UPDATE_CURRENT)))
+                .addAction(new NotificationCompat.Action(
+                        R.drawable.ic_close,
+                        getString(R.string.no),
+                        PendingIntent.getActivity(this, 0, noIntent, PendingIntent.FLAG_UPDATE_CURRENT)))
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(" Vous êtes à 100 Mètres d'un accident. Nous aimerions bien que vous nous donniez votre vision actuelle de " +
+                                "situation. Cliquez sur TOUJOURS LA si l'accident est toujours là ou PAS LA dans le cas contraire..."))
+
+                .build();
+
+        notificationManager.notify(NOTIFY_ID, notification);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        processIntentAction(intent);
+        super.onNewIntent(intent);
+    }
+
+    private void processIntentAction(Intent intent) {
+        if(intent.getAction() != null) {
+            switch (intent.getAction()) {
+                case YES_ACTION:
+                    Toast.makeText(this,"Yes :)", Toast.LENGTH_SHORT).show();
+                    break;
+                case NO_ACTION:
+                    Toast.makeText(this, "No :(", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
 }

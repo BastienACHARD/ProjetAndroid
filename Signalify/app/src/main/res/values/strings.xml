@@ -11,6 +11,8 @@
     <string name="notification_channel_title">myTitle</string>
     <string name="notification_channel_desc">This is a test canal</string>
     <string name="msg_token_fmt">Message</string>
+    <string name="yes">TOUJOURS LA</string>
+    <string name="no">PLUS LA</string>
     <string-array name="List">
         <item>Routier</item>
         <item>Chantier</item>
