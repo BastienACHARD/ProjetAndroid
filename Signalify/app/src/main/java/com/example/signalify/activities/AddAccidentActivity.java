@@ -17,6 +17,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.speech.RecognizerIntent;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -40,6 +41,7 @@ import com.example.signalify.models.Notifications;
 import com.example.signalify.R;
 import com.example.signalify.fragments.PictureFragment;
 import com.example.signalify.models.Accident;
+import com.example.signalify.models.Utilities;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -52,10 +54,11 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
 
-public class AddAccidentActivity extends AppCompatActivity implements LocationListener,IPictureActivity {
+public class AddAccidentActivity extends AppCompatActivity implements LocationListener,IPictureActivity, Utilities {
 
     FirebaseStorage firebaseStorage;
     Accident accident;
@@ -79,6 +82,21 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
     public AddAccidentActivity() {
     }
 
+    private  void speak()
+    {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Dites quelque chose");
+        try {
+            startActivityForResult(intent, REQUEST_CODE_SPEECH);
+        } catch (Exception e)
+        {
+            Toast.makeText(getApplicationContext(), ""+e.getMessage(),Toast.LENGTH_LONG).show();
+        }
+    }
+
     @SuppressLint("RestrictedApi")
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,6 +106,7 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
         setContentView(R.layout.add_accident);
 
         imageView = (ImageView) (findViewById(R.id.picture));
+        ImageButton voiceButton = (ImageButton)findViewById(R.id.voiceButton);
         Button photoBtn = (Button) (findViewById(R.id.photobtn));
         photoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,6 +138,14 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
         Button valid = (Button) findViewById(R.id.valid);
         Button cancel = (Button) findViewById(R.id.cancel);
         description = (EditText) findViewById(R.id.multiAutoCompleteTextView);
+
+
+        voiceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                speak();
+            }
+        });
 
         valid.setOnClickListener(new View.OnClickListener() {
             @Override

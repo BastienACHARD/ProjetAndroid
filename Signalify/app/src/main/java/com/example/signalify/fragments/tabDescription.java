@@ -120,8 +120,6 @@ public class tabDescription extends Fragment {
         ( (Button) root.findViewById(R.id.buttonAjout)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast toast=Toast.makeText(getContext(),id,Toast.LENGTH_LONG);
-                toast.show();
                 Intent intent=new Intent(getContext(), AddCommentsActivity.class);
                 intent.putExtra("code", id);
                 startActivity(intent);

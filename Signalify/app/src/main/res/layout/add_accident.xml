@@ -36,6 +36,12 @@
             android:gravity="start"
             android:hint="Rédiger votre commentaire ici..."
             android:textSize="24sp" />
+
+        <ImageButton
+            android:id="@+id/voiceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_mic_black_24dp"/>
     </LinearLayout>
 
    <LinearLayout

@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.speech.RecognizerIntent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.MultiAutoCompleteTextView;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.example.signalify.R;
+import com.example.signalify.models.Utilities;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -30,9 +32,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.Locale;
+
 import static com.example.signalify.activities.IPictureActivity.REQUEST_CAMERA;
 
-public class AddCommentsActivity extends AppCompatActivity {
+public class AddCommentsActivity extends AppCompatActivity implements Utilities {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     MultiAutoCompleteTextView description;
@@ -40,6 +44,21 @@ public class AddCommentsActivity extends AppCompatActivity {
     StorageReference mStorageRef;
     String accidentId;
     public Uri imguri;
+
+    private  void speak()
+    {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Dites quelque chose");
+        try {
+            startActivityForResult(intent, REQUEST_CODE_SPEECH);
+        } catch (Exception e)
+        {
+            Toast.makeText(getApplicationContext(), ""+e.getMessage(),Toast.LENGTH_LONG).show();
+        }
+    }
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -72,20 +91,33 @@ public class AddCommentsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 FileUploader();
                 chargeData();
+                back();
             }
         });
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                finish();
+               back();
+
             }
         });
 
 
+        btnDicter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                speak();
+            }
+        });
 
+    }
+
+    private void back()
+    {
+        Intent intent = new Intent(getApplicationContext(), ShowDetailActivity.class);
+        intent.putExtra("code", accidentId);
+        startActivity(intent);
     }
 
     private void chargeData() {
