@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,11 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.signalify.R;
+import com.example.signalify.activities.IPictureActivity;
+import com.example.signalify.activities.ShowDetailActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,7 +36,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class tabPhoto extends Fragment {
+public class tabPhoto extends Fragment implements IPictureActivity {
     int index=0;
 
     String id;
@@ -40,7 +44,7 @@ public class tabPhoto extends Fragment {
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
     ArrayList listImage = new ArrayList() {{
-        add("images/cr7.jpg");
+        add("images/image36");
         add("images/andrea.jpg");
     }};
 
@@ -57,6 +61,7 @@ public class tabPhoto extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if(getArguments()!=null) id= getArguments().getString("overlay");
+
 
         firebaseStorage=FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
@@ -90,6 +95,7 @@ public class tabPhoto extends Fragment {
 
     }
     private void getAccidentImage(String id, final View root){
+        Log.d("id liste de l'image", ""+id);
         FirebaseFirestore.getInstance().collection("Accidents").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -101,8 +107,9 @@ public class tabPhoto extends Fragment {
                 {
                     DocumentSnapshot doc = task.getResult();
                     assert doc != null;
-                   // listImage = (ArrayList<String>) doc.getData().get("image");
-                 //   assert listImage != null;
+                    listImage = (ArrayList<String>) doc.getData().get("image");
+                   assert listImage != null;
+
                     GridView list= root.findViewById(R.id.gridView);
                     CustomAdapeter custom=new CustomAdapeter();
                     list.setAdapter(custom);
@@ -135,7 +142,9 @@ public class tabPhoto extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             View view=getLayoutInflater().inflate(R.layout.image_solo,null);
             ImageView image=(ImageView)(view.findViewById(R.id.imageView));
-            displayImage(image,(String)listImage.get(position));
+            displayImage(image,"images/"+(String)listImage.get(position));
+
+
             return view;
         }
     }

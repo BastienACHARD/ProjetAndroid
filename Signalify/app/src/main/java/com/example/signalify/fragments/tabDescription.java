@@ -67,15 +67,6 @@ public class tabDescription extends Fragment {
                    assert doc != null;
                   description = (ArrayList<String>) doc.getData().get("description");
                    assert description != null;
-                   description.add("oklm yfkuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
-                   description.add("babe");
-                   description.add("tsrvvvvvvvvvvvvvvvvukgimuibhipuvydftyfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdddddddddddddddddddddddddddddddddddddddddddddddddd");
-                   description.add("tsrvvvvvvvvvvvvvvvvukgimuibhipuvydftyfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdddddddddddddddddddddddddddddddddddddddddddddddddd");
-                   description.add("tsrvvvvvvvvvvvvvvvvukgimuibhipuvydftyfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdddddddddddddddddddddddddddddddddddddddddddddddddd");
-                   description.add("tsrvvvvvvvvvvvvvvvvukgimuibhipuvydftyfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdddddddddddddddddddddddddddddddddddddddddddddddddd");
-                   description.add("tsrvvvvvvvvvvvvvvvvukgimuibhipuvydftyfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdddddddddddddddddddddddddddddddddddddddddddddddddd");
-                   description.add("tsrvvvvvvvvvvvvvvvvukgimuibhipuvydftyfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdddddddddddddddddddddddddddddddddddddddddddddddddd");
-
 
                    GridView list= root.findViewById(R.id.gridViewDescription);
                   CustomAdapeter custom = new CustomAdapeter();
@@ -86,7 +77,7 @@ public class tabDescription extends Fragment {
                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                            String text = description.get(position);
-                           Log.d("le texte a lire", text);
+
                           t1.speak(text,TextToSpeech.QUEUE_FLUSH,null);
                        }
                    });
@@ -163,6 +154,7 @@ public class tabDescription extends Fragment {
             View view=getLayoutInflater().inflate(R.layout.card_item,null);
             TextView text=(TextView)(view.findViewById(R.id.card_text));
                 text.setText(description.get(position));
+
             return view;
         }
     }
