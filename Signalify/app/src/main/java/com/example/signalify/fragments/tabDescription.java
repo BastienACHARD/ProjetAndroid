@@ -77,7 +77,7 @@ public class tabDescription extends Fragment {
                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                            String text = description.get(position);
-                           Log.d("le texte a lire", text);
+
                           t1.speak(text,TextToSpeech.QUEUE_FLUSH,null);
                        }
                    });
@@ -154,6 +154,7 @@ public class tabDescription extends Fragment {
             View view=getLayoutInflater().inflate(R.layout.card_item,null);
             TextView text=(TextView)(view.findViewById(R.id.card_text));
                 text.setText(description.get(position));
+
             return view;
         }
     }
