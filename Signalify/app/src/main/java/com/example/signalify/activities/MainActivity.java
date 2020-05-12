@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -75,8 +76,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private MapView map;
     private ImageView btnParam;
     private SearchView sv;
+    Marker startMarker;
     int id = 0;
-    private GeoPoint myLocation;
+    public GeoPoint myLocation;
     IMapController mapController;
     private View rootView;
     private LocationManager locationManager;
@@ -272,7 +274,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
 
     private void addMaker(GeoPoint startPoint) {
-        Marker startMarker = new Marker(map);
+        startMarker = new Marker(map);
         startMarker.setPosition(startPoint);
         startMarker.setAnchor(Marker.ANCHOR_BOTTOM, Marker.ANCHOR_BOTTOM);
         startMarker.setIcon(getResources().getDrawable(R.mipmap.ic_nav));
@@ -284,19 +286,38 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     public HashMap<String, OverlayItem> constructOverlay(final HashMap<String, Accident> map){
         for (Map.Entry mapentry : map.entrySet()) {
             Accident accident = (Accident) mapentry.getValue();
-            addAccidentMarker(new GeoPoint(accident.getLocation().getLatitude(), accident.getLocation().getLongitude()));
+            addAccidentMarker(accident.getType(),new GeoPoint(accident.getLocation().getLatitude(), accident.getLocation().getLongitude()));
             items.put((String) mapentry.getKey(),new OverlayItem(accident.getType(), accident.getDescription().get(0),
                     new GeoPoint(accident.getLocation().getLatitude(), accident.getLocation().getLongitude())));
         }
          return items;
     }
 
-    public void addAccidentMarker(GeoPoint geoPoint) {
+    public void addAccidentMarker(String type,GeoPoint geoPoint) {
         Marker pointMarker = new Marker(map);
-        pointMarker.setPosition(geoPoint);
-        pointMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-        pointMarker.setIcon(getResources().getDrawable(R.mipmap.ic_lo));
-        map.getOverlays().add(pointMarker);
+        //pointMarker.setPosition(geoPoint);
+        //pointMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+        //pointMarker.setIcon(getResources().getDrawable(R.mipmap.ic_lo));
+        //map.getOverlays().add(pointMarker);
+        map.invalidate();
+
+        Marker m = new Marker(map);
+        m.setPosition(geoPoint);
+        m.setTextLabelBackgroundColor(
+                Color.TRANSPARENT
+        );
+        m.setTextLabelForegroundColor(
+                Color.RED
+        );
+        m.setTextLabelFontSize(40);
+        m.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+        if(type.equals("Routier")) m.setIcon(getResources().getDrawable(R.drawable.ic_directions_car_black_30dp));
+        if(type.equals("Embouteillage")) m.setIcon(getResources().getDrawable(R.drawable.ic_rv_hookup_black_24dp));
+        if(type.equals("Chantier")) m.setIcon(getResources().getDrawable(R.drawable.ic_location_city_black_30dp));
+        if(type.equals("Radar")) m.setIcon(getResources().getDrawable(R.drawable.ic_track_changes_black_30dp));
+        m.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_TOP);
+        map.getOverlays()
+                .add(m);
         map.invalidate();
     }
 
@@ -406,9 +427,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     public void onLocationChanged(Location location) {
         GeoPoint center = new GeoPoint(location.getLatitude(), location.getLongitude());
         myLocation = center;
-       // mapController.animateTo(center);
-       // addMaker(center);
-        String accidentKey = checkProximity(myLocation);
+        //mapController.animateTo(center);
+        //startMarker.setPosition(myLocation);
+        //String accidentKey = checkProximity(myLocation);
          //if( accidentKey != null) generateNotification(accidentKey);
        // Log.d("CHANGE","Changement");
     }

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -46,6 +47,7 @@ public class PictureFragment extends Fragment {
 
     public void takePicture() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.setAction("images/*");
         getActivity().startActivityForResult(intent, IPictureActivity.REQUEST_CAMERA);
     }
 

@@ -8,57 +8,92 @@
     android:layout_height="match_parent">
 
 
-    <Spinner
-        android:id="@+id/spiner"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:entries="@array/List"
-        android:gravity="center_horizontal" />
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/custom_edit"
-        android:hint="Entrer une description"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/valid" />
-
-    <FrameLayout
-        android:id="@+id/fragmentPicture"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"/>
 
     <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-        android:layout_gravity="center_horizontal"
-        >
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="8"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/valid"
+        <Spinner
+            android:id="@+id/spiner"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:entries="@array/List"
+            android:gravity="center_horizontal" />
 
-            android:layout_width="163dp"
+        <MultiAutoCompleteTextView
+            android:id="@+id/multiAutoCompleteTextView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/frag_description_margin"
-            android:background="@drawable/custom_button1"
-            android:text="Valider"
-            android:textColor="#000000" />
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:gravity="start"
+            android:hint="Rédiger votre commentaire ici..."
+            android:textSize="24sp" />
+    </LinearLayout>
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_weight="15">
+    <ImageView
+        android:id="@id/photo"
+        android:src="@drawable/camera"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/photobtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_weight="1"
+        android:background="@drawable/button_blue"
+        android:drawableLeft="@mipmap/ic_photo"
+        android:gravity="center"
+        android:paddingStart="30dp"
+        android:paddingEnd="20dp"
+        android:text="Ajouter une photo"
+        android:textColor="#ffffff"
+        android:textSize="23sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/cancel"
-            android:layout_width="161dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/frag_description_margin"
-            android:background="@drawable/custom_button1"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_red"
             android:text="Annuler"
-            android:textColor="#000000" />
+            android:textColor="#ffffff"
+            android:textSize="20dp" />
+
+        <Button
+            android:id="@+id/valid"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_green"
+            android:text="Signaler"
+            android:textColor="#ffffff"
+            android:textSize="20dp" />
+
 
     </LinearLayout>
 
