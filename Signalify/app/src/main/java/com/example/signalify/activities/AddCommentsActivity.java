@@ -7,7 +7,9 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -45,8 +47,7 @@ public class AddCommentsActivity extends AppCompatActivity implements Utilities 
     String accidentId;
     public Uri imguri;
 
-    private  void speak()
-    {
+    private void speak() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -54,9 +55,8 @@ public class AddCommentsActivity extends AppCompatActivity implements Utilities 
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Dites quelque chose");
         try {
             startActivityForResult(intent, REQUEST_CODE_SPEECH);
-        } catch (Exception e)
-        {
-            Toast.makeText(getApplicationContext(), ""+e.getMessage(),Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "" + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -66,11 +66,10 @@ public class AddCommentsActivity extends AppCompatActivity implements Utilities 
         super.onCreate(savedInstanceState);
         mStorageRef = FirebaseStorage.getInstance().getReference();
         setContentView(R.layout.activity_add_comments);
-        Intent intent=getIntent();
+        Intent intent = getIntent();
         accidentId = intent.getStringExtra("code");
         getSupportActionBar().setTitle("Ajouter un commentaire");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
 
         description = (MultiAutoCompleteTextView) findViewById(R.id.multiAutoCompleteTextView);
@@ -82,23 +81,21 @@ public class AddCommentsActivity extends AppCompatActivity implements Utilities 
         btnPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    takePicture();
+                takePicture();
             }
         });
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FileUploader();
-                chargeData();
-                back();
+                callDialog();
             }
         });
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               back();
+                back();
 
             }
         });
@@ -113,8 +110,7 @@ public class AddCommentsActivity extends AppCompatActivity implements Utilities 
 
     }
 
-    private void back()
-    {
+    private void back() {
         Intent intent = new Intent(getApplicationContext(), ShowDetailActivity.class);
         intent.putExtra("code", accidentId);
         startActivity(intent);
@@ -123,7 +119,7 @@ public class AddCommentsActivity extends AppCompatActivity implements Utilities 
     private void chargeData() {
         DocumentReference accidentRef = db.collection("Accidents").document(accidentId);
         accidentRef.update("description", FieldValue.arrayUnion(description.getText().toString()));
-        accidentRef.update("image", FieldValue.arrayUnion("image"+imguri.getLastPathSegment()));
+        accidentRef.update("image", FieldValue.arrayUnion("image" + imguri.getLastPathSegment()));
         //washingtonRef.update("regions", FieldValue.arrayRemove("east_coast"));
     }
 
@@ -142,30 +138,27 @@ public class AddCommentsActivity extends AppCompatActivity implements Utilities 
                 imguri = (Uri) data.getData();
                 Bitmap picture = (Bitmap) data.getExtras().get("data");
                 imguri = getImageUri(getApplicationContext(), picture);
-                Toast toast = Toast.makeText(getApplicationContext(), "Picture charged : "+imguri, Toast.LENGTH_LONG);
-                toast.show();
+
             } else if (resultCode == RESULT_CANCELED) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Picture canceled", Toast.LENGTH_LONG);
-                toast.show();
+
             } else {
-                Toast toast = Toast.makeText(getApplicationContext(), "action failed", Toast.LENGTH_LONG);
-                toast.show();
+
             }
         }
     }
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
-        Bitmap OutImage = Bitmap.createScaledBitmap(inImage, 1000, 1000,true);
+        Bitmap OutImage = Bitmap.createScaledBitmap(inImage, 1000, 1000, true);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), OutImage, "Title", null);
         return Uri.parse(path);
     }
 
-    private StorageReference getStorageReference(){
+    private StorageReference getStorageReference() {
         //return mStorageRef.child(System.currentTimeMillis()+"."+getExtension(imguri));
-        return mStorageRef.child("images/image"+imguri.getLastPathSegment());
+        return mStorageRef.child("images/image" + imguri.getLastPathSegment());
     }
 
-    private void FileUploader(){
+    private void FileUploader() {
         getStorageReference().putFile(imguri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -181,5 +174,28 @@ public class AddCommentsActivity extends AppCompatActivity implements Utilities 
                         // ...
                     }
                 });
+    }
+
+    public void callDialog() {
+        AlertDialog confirm = new AlertDialog.Builder(this).create();
+        confirm.setTitle("Ajout d'un nouvel incident");
+        confirm.setMessage("Etes vous sûr(e) de vouloir ajouter cet incident ?");
+        confirm.setButton(AlertDialog.BUTTON_POSITIVE, "Oui", new AlertDialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                FileUploader();
+                chargeData();
+                back();
+            }
+        });
+        confirm.setButton(AlertDialog.BUTTON_NEGATIVE, "Non", new AlertDialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        confirm.show();
+
+
     }
 }
