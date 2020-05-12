@@ -73,8 +73,6 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
     ArrayList<String> images = new ArrayList<>();
     int id = 0;
 
-    StorageReference mStorageRef;
-
     public Uri imguri;
 
 
@@ -86,11 +84,10 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
     public void onCreate(Bundle savedInstanceState) {
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
-        mStorageRef = FirebaseStorage.getInstance().getReference();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_accident);
 
-        imageView = (ImageView) (findViewById(R.id.photo));
+        imageView = (ImageView) (findViewById(R.id.picture));
         Button photoBtn = (Button) (findViewById(R.id.photobtn));
         photoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,7 +162,7 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
 
     private StorageReference getStorageReference(){
         //return mStorageRef.child(System.currentTimeMillis()+"."+getExtension(imguri));
-        return mStorageRef.child("images/image"+imguri.getLastPathSegment());
+        return storageReference.child("images/image"+imguri.getLastPathSegment());
     }
 
     private void FileUploader(){
@@ -175,7 +172,7 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         // Get a URL to the uploaded content
                         // Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                        images.add(getStorageReference().toString());
+                        //images.add(getStorageReference().toString());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -278,12 +275,12 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
         switch (requestCode) {
             case REQUEST_CAMERA: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "CAMERA authorization granted", Toast.LENGTH_LONG);
-                    toast.show();
+                    //Toast toast = Toast.makeText(getApplicationContext(), "CAMERA authorization granted", Toast.LENGTH_LONG);
+                    //toast.show();
                     takePicture();
                 } else {
-                    Toast toast = Toast.makeText(getApplicationContext(), "CAMERA authorization NOT granted", Toast.LENGTH_LONG);
-                    toast.show();
+                    //Toast toast = Toast.makeText(getApplicationContext(), "CAMERA authorization NOT granted", Toast.LENGTH_LONG);
+                    //toast.show();
                 }
             }
             break;
@@ -299,14 +296,14 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
                 Bitmap picture = (Bitmap) data.getExtras().get("data");
                 imguri = getImageUri(getApplicationContext(), picture);
                 setImage(picture);
-                Toast toast = Toast.makeText(getApplicationContext(), "Picture charged : "+imguri, Toast.LENGTH_LONG);
-                toast.show();
+                //Toast toast = Toast.makeText(getApplicationContext(), "Picture charged : "+imguri, Toast.LENGTH_LONG);
+                //toast.show();
             } else if (resultCode == RESULT_CANCELED) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Picture canceled", Toast.LENGTH_LONG);
-                toast.show();
+                //Toast toast = Toast.makeText(getApplicationContext(), "Picture canceled", Toast.LENGTH_LONG);
+                //toast.show();
             } else {
-                Toast toast = Toast.makeText(getApplicationContext(), "action failed", Toast.LENGTH_LONG);
-                toast.show();
+                //Toast toast = Toast.makeText(getApplicationContext(), "action failed", Toast.LENGTH_LONG);
+                //toast.show();
             }
         }
     }

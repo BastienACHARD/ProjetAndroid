@@ -286,11 +286,21 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     public HashMap<String, OverlayItem> constructOverlay(final HashMap<String, Accident> map){
         for (Map.Entry mapentry : map.entrySet()) {
             Accident accident = (Accident) mapentry.getValue();
-            addAccidentMarker(accident.getType(),new GeoPoint(accident.getLocation().getLatitude(), accident.getLocation().getLongitude()));
-            items.put((String) mapentry.getKey(),new OverlayItem(accident.getType(), accident.getDescription().get(0),
-                    new GeoPoint(accident.getLocation().getLatitude(), accident.getLocation().getLongitude())));
+            if(displayThat(accident.getType())){
+                addAccidentMarker(accident.getType(),new GeoPoint(accident.getLocation().getLatitude(), accident.getLocation().getLongitude()));
+                items.put((String) mapentry.getKey(),new OverlayItem(accident.getType(), accident.getDescription().get(0),
+                        new GeoPoint(accident.getLocation().getLatitude(), accident.getLocation().getLongitude())));
+            }
         }
          return items;
+    }
+
+    private boolean displayThat(String type) {
+        if(type.equals("Routier") && accidentState) return true;
+        if(type.equals("Embouteillage") && embouteillageState) return true;
+        if(type.equals("Chantier") && chantierState) return true;
+        if(type.equals("Radar") && radarState) return true;
+        return false;
     }
 
     public void addAccidentMarker(String type,GeoPoint geoPoint) {

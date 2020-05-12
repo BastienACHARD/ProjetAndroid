@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.example.signalify.fragments.Dialog;
 import com.example.signalify.models.PageAdapter;
@@ -36,6 +37,8 @@ public class ShowDetailActivity extends AppCompatActivity {
         viewPage = (ViewPager)(findViewById(R.id.viewpage));
         Intent intent=getIntent();
         String accidentId =intent.getStringExtra("code");
+        //Toast toast = Toast.makeText(getApplicationContext(), "ID : "+accidentId, Toast.LENGTH_LONG);
+        //toast.show();
 
         pageAdapter=new PageAdapter(getSupportFragmentManager(),this.tabLayOut.getTabCount(), accidentId);
         viewPage.setAdapter(pageAdapter);

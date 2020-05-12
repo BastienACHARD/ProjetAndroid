@@ -67,15 +67,6 @@ public class tabDescription extends Fragment {
                    assert doc != null;
                   description = (ArrayList<String>) doc.getData().get("description");
                    assert description != null;
-                   description.add("oklm yfkuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
-                   description.add("babe");
-                   description.add("tsrvvvvvvvvvvvvvvvvukgimuibhipuvydftyfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdddddddddddddddddddddddddddddddddddddddddddddddddd");
-                   description.add("tsrvvvvvvvvvvvvvvvvukgimuibhipuvydftyfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdddddddddddddddddddddddddddddddddddddddddddddddddd");
-                   description.add("tsrvvvvvvvvvvvvvvvvukgimuibhipuvydftyfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdddddddddddddddddddddddddddddddddddddddddddddddddd");
-                   description.add("tsrvvvvvvvvvvvvvvvvukgimuibhipuvydftyfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdddddddddddddddddddddddddddddddddddddddddddddddddd");
-                   description.add("tsrvvvvvvvvvvvvvvvvukgimuibhipuvydftyfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdddddddddddddddddddddddddddddddddddddddddddddddddd");
-                   description.add("tsrvvvvvvvvvvvvvvvvukgimuibhipuvydftyfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdddddddddddddddddddddddddddddddddddddddddddddddddd");
-
 
                    GridView list= root.findViewById(R.id.gridViewDescription);
                   CustomAdapeter custom = new CustomAdapeter();
