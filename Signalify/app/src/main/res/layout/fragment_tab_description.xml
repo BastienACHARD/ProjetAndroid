@@ -20,8 +20,8 @@
                 android:id="@+id/gridViewDescription"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginBottom="@dimen/frag_description_margin"
+                android:layout_marginTop="@dimen/frag_description_margin"
                 android:clickable="false"
                 android:columnWidth="@dimen/item_width"
                 android:drawSelectorOnTop="true"
@@ -36,8 +36,8 @@
             android:layout_width="match_parent"
             android:layout_height="183dp"
             android:layout_gravity="center"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginTop="@dimen/frag_description_margin"
+            android:layout_marginBottom="@dimen/frag_description_margin"
             android:layout_weight="2"
             android:orientation="horizontal">
 
@@ -45,8 +45,8 @@
                 android:id="@+id/buttonAjout"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginLeft="@dimen/btn_add_margin_left_right"
+                android:layout_marginRight="@dimen/btn_add_margin_left_right"
                 android:background="@drawable/custom_button1"
                 android:clickable="false"
                 android:minWidth="300dp"
@@ -57,8 +57,8 @@
                 android:id="@+id/appel"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:maxWidth="50dp"
-                android:minWidth="50dp"
+                android:maxWidth="@dimen/btn_call_width"
+                android:minWidth="@dimen/btn_call_width"
                 android:src="@drawable/tel" />
 
 

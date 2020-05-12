@@ -38,10 +38,14 @@
     <dimen name="item_width">600dp</dimen>
 
              <!-- Fragment description -->
-    <dimen name="magin">20dp</dimen>
-    <dimen name="txt_description_size">20dp</dimen>
-    <dimen name="frag_description_margin">20dp</dimen>
-    <dimen name="btn_call_height">40dp</dimen>
-    <dimen name="btn_call_width">40dp</dimen>
+    <dimen name="frag_description_margin">5dp</dimen>
+    <dimen name="btn_add_margin_left_right">15dp</dimen>
+    <dimen name="btn_call_width">50dp</dimen>
+
+
+    <!-- Card items -->
+    <dimen name="item_Card_descption_width">550dp</dimen>
+    <dimen name="item_Card_descption_txt_size">20dp</dimen>
+    <dimen name="item_Card_descption_padding">20dp</dimen>
 
 </resources>
