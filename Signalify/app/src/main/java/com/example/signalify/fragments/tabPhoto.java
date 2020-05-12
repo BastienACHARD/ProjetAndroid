@@ -101,8 +101,8 @@ public class tabPhoto extends Fragment {
                 {
                     DocumentSnapshot doc = task.getResult();
                     assert doc != null;
-                    listImage = (ArrayList<String>) doc.getData().get("image");
-                    assert listImage != null;
+                   // listImage = (ArrayList<String>) doc.getData().get("image");
+                 //   assert listImage != null;
                     GridView list= root.findViewById(R.id.gridView);
                     CustomAdapeter custom=new CustomAdapeter();
                     list.setAdapter(custom);
