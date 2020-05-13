@@ -3,10 +3,12 @@ package com.example.signalify.activities;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -44,6 +46,7 @@ import com.example.signalify.models.Accident;
 import com.example.signalify.models.Utilities;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
@@ -150,26 +153,21 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
         valid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FileUploader();
-                chargeData();
-                setAccident(type, myLocation, descriptions, images);
-                // setAccident(type, location, descriptions, images);
-                addAccidentDataBase(accident);
-                //   showImage(images.get(rand.nextInt(images.size())));
-                //showImage("images/cr7.jpg");
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                finish();
 
+                callDialog();
+                //finish();
             }
         });
+
+
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
-                finish();
+              //  finish();
             }
         });
 
@@ -216,18 +214,59 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
     }
 
     public void addAccidentDataBase(Accident accident) {
-        db.collection("Accidents").add(accident);
+        db.collection("Accidents").add(accident).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                showImage("images/"+(String)images.get(0));
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                sendNotificationChannelNormal("Echec lors de l'ajout de l'incident", "Veuillez réessayer", Notifications.CHANNEL_ID, NotificationCompat.PRIORITY_HIGH);
+
+            }
+        });
+
+    }
+    public void callDialog()
+    {
+        AlertDialog confirm = new AlertDialog.Builder(this).create();
+        confirm.setTitle("Ajout d'un nouvel incident");
+        confirm.setMessage("Etes vous sûr(e) de vouloir ajouter cet incident ?");
+        confirm.setButton(AlertDialog.BUTTON_POSITIVE, "Oui", new AlertDialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                FileUploader();
+                chargeData();
+                setAccident(type, myLocation, descriptions, images);
+                // setAccident(type, location, descriptions, images);
+                addAccidentDataBase(accident);
+                //   Toast.makeText(getApplicationContext(),, Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        confirm.setButton(AlertDialog.BUTTON_NEGATIVE, "Non", new AlertDialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        confirm.show();
+
     }
 
     void showImage(String name) {
+
         StorageReference imgRef = storageReference.child(name);
         long MAXBYTES = 1024 * 1024;
         imgRef.getBytes(MAXBYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
-
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                if (true)
+
+                if (MainActivity.imageNotifChoice)
                     sendNotificationChannel("Un nouvel incident a été déclaré.", "Cliquez pour plus d'informations sur l'accident.", Notifications.CHANNEL_ID, NotificationCompat.PRIORITY_HIGH, bitmap);
                 else
                     sendNotificationChannelNormal("Un nouvel incident a été déclaré.", "Cliquez pour plus d'informations sur l'accident.", Notifications.CHANNEL_ID, NotificationCompat.PRIORITY_HIGH);

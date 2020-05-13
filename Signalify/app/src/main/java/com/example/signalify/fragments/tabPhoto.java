@@ -43,14 +43,10 @@ public class tabPhoto extends Fragment implements IPictureActivity {
     FirebaseFirestore firebaseFirestore ;
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
-    ArrayList listImage = new ArrayList() {{
-        add("images/image36");
-        add("images/andrea.jpg");
-    }};
+    ArrayList listImage = new ArrayList() ;
 
     ArrayList<Bitmap> bitmapList= new ArrayList<Bitmap>();
 
-    int[] images={R.drawable.accident1,R.drawable.accident3,R.drawable.accident6};
     public tabPhoto() {
         // Required empty public constructor
     }
