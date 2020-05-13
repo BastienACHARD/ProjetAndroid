@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         Address adress = adressList.get(0);
 
                         GeoPoint geo = new GeoPoint(adress.getLatitude(), adress.getLongitude());
-                        
+
 
                         addAnyMarker(geo, location);
                         map.getController().animateTo(geo);
@@ -449,6 +449,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         Notification notification = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
                 .setContentIntent(pendingIntent)
                 .setSmallIcon(R.drawable.alarm)
+                .setTimeoutAfter(2000)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentTitle("Vous êtes proche d'un accident !")
                 .setContentText(" Vous êtes à 100 Mètres d'un accident.")

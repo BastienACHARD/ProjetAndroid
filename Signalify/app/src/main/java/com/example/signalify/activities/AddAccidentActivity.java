@@ -164,9 +164,10 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                sendNotificationChannelNormal("Un nouvel incident a été déclaré.", "Cliquez pour plus d'informations sur l'accident.", Notifications.CHANNEL_ID, NotificationCompat.PRIORITY_HIGH);
 
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
+                //   Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+               // startActivity(intent);
               //  finish();
             }
         });
