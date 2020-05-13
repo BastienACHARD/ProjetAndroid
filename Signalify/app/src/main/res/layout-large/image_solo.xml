@@ -8,6 +8,7 @@
 
     <ImageView
         android:id="@+id/imageView"
+        android:background="#f0f0f0"
         android:layout_width="@dimen/img_width"
         android:layout_height="@dimen/img_height" />
 

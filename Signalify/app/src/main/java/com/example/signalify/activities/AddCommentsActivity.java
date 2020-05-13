@@ -88,7 +88,13 @@ public class AddCommentsActivity extends AppCompatActivity implements Utilities 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callDialog();
+
+                if(description.getText().toString().equals(""))
+                {
+                   noNull();
+                }
+                else
+                    callDialog();
             }
         });
 
@@ -176,17 +182,36 @@ public class AddCommentsActivity extends AppCompatActivity implements Utilities 
                 });
     }
 
-    public void callDialog() {
+    public void noNull()
+    {
+        AlertDialog confirm = new AlertDialog.Builder(this).create();
+        confirm.setTitle("Champ requis");
+        confirm.setMessage("Veuillez renseigner tous les champs");
+        confirm.setButton(AlertDialog.BUTTON_POSITIVE, "Ok", new AlertDialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        confirm.show();
+
+
+    }
+    public void callDialog()
+    {
         AlertDialog confirm = new AlertDialog.Builder(this).create();
         confirm.setTitle("Ajout d'un nouvel incident");
-        confirm.setMessage("Etes vous sûr(e) de vouloir ajouter cet incident ?");
+        confirm.setMessage("Etes vous sûr(e) de vouloir ajouter cet commentaire ?");
         confirm.setButton(AlertDialog.BUTTON_POSITIVE, "Oui", new AlertDialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                if(description.getText().toString().equals(""))
+
                 FileUploader();
                 chargeData();
                 back();
-            }
+                }
         });
         confirm.setButton(AlertDialog.BUTTON_NEGATIVE, "Non", new AlertDialog.OnClickListener() {
             @Override
@@ -196,6 +221,7 @@ public class AddCommentsActivity extends AppCompatActivity implements Utilities 
         });
         confirm.show();
 
-
     }
+
+
 }
