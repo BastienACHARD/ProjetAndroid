@@ -56,6 +56,8 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -423,7 +425,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         for (Map.Entry mapentry : accidentsListe.entrySet()) {
             Accident accident = (Accident) mapentry.getValue();
             double distance = myLocation.distanceToAsDouble(new GeoPoint(accident.getLocation().getLatitude(), accident.getLocation().getLongitude()));
-            if(distance <= 10000000){
+            if(distance <= 500){
                 return (String) mapentry.getKey();
             }
         }
@@ -441,15 +443,17 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         intent.putExtra("code", accidentKey);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);
         Intent yesIntent = getNotificationIntent();
+        yesIntent.putExtra("code",accidentKey);
         yesIntent.setAction(YES_ACTION);
 
         Intent noIntent = getNotificationIntent();
-        yesIntent.setAction(NO_ACTION);
+        noIntent.putExtra("code",accidentKey);
+        noIntent.setAction(NO_ACTION);
 
         Notification notification = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
                 .setContentIntent(pendingIntent)
                 .setSmallIcon(R.drawable.alarm)
-                .setTimeoutAfter(2000)
+                .setTimeoutAfter(10000)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentTitle("Vous êtes proche d'un accident !")
                 .setContentText(" Vous êtes à 100 Mètres d'un accident.")
@@ -464,7 +468,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         getString(R.string.no),
                         PendingIntent.getActivity(this, 0, noIntent, PendingIntent.FLAG_UPDATE_CURRENT)))
                 .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText(" Vous êtes à 100 Mètres d'un accident. Nous aimerions bien que vous nous donniez votre vision actuelle de " +
+                        .bigText(" Vous êtes à 500 Mètres d'un accident. Nous aimerions bien que vous nous donniez votre vision actuelle de la" +
                                 "situation. Cliquez sur TOUJOURS LA si l'accident est toujours là ou PAS LA dans le cas contraire..."))
 
                 .build();
@@ -482,12 +486,27 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         if(intent.getAction() != null) {
             switch (intent.getAction()) {
                 case YES_ACTION:
-                    Toast.makeText(this,"Yes :)", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this," Merci pour votre collaboration. Votre avis a été pris en compte ", Toast.LENGTH_SHORT).show();
                     break;
                 case NO_ACTION:
-                    Toast.makeText(this, "No :(", Toast.LENGTH_SHORT).show();
+                    String accidentId = intent.getStringExtra("code");
+                    DocumentReference accidentRef = db.collection("Accidents").document(accidentId);
+                    accidentRef.update("veracity", getVeracity(accidentId));
+                    Toast.makeText(this, "Merci pour votre collaboration. Votre avis a été pris en compte", Toast.LENGTH_SHORT).show();
             }
         }
     }
+
+    private String getVeracity(String accidentId){
+        for (Map.Entry mapentry : accidentsListe.entrySet()) {
+            if(accidentId.equals((String) mapentry.getKey())){
+                Accident accident = (Accident) mapentry.getValue();
+                return Integer.toString(Integer.parseInt(accident.getVeracity()) + 1);
+            }
+        }
+        return null;
+    }
+
+
 
 }
