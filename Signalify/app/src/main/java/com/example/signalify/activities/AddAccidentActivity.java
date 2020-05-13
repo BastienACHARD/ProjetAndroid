@@ -210,7 +210,7 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
     }
 
     public void setAccident(String type, GeoPoint location, ArrayList<String> description, ArrayList<String> image) {
-        accident = new Accident(type, location, description, image);
+        accident = new Accident(type, location, description, image,0);
     }
 
     public void addAccidentDataBase(Accident accident) {

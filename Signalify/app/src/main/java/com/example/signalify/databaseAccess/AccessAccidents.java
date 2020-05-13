@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 
 import com.example.signalify.models.Accident;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.annotations.Nullable;
 import com.google.firebase.firestore.DocumentChange;
@@ -35,6 +37,7 @@ public class AccessAccidents {
     }
 
     public void allAccidents(final MyCallback myCallback){
+
         db.collection("Accidents")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -48,8 +51,13 @@ public class AccessAccidents {
                                         document.getString("type"),
                                         document.getGeoPoint("location"),
                                         (ArrayList<String>) document.get("description"),
-                                        (ArrayList<String>) document.get("image"));
-                                accidentsListe.put(document.getId(), newItem);
+                                        (ArrayList<String>) document.get("image"),
+                                        Integer.parseInt(document.getString("veracity")));
+                                if(Integer.parseInt(newItem.getVeracity()) >= 2){
+                                    deleteAccident(document.getId());
+                                }else{
+                                    accidentsListe.put(document.getId(), newItem);
+                                }
 
                             }
                             myCallback.onCallback(accidentsListe);
@@ -60,6 +68,24 @@ public class AccessAccidents {
                 });
        // Log.d("Affiche", accidentsListe.toString());
     }
+
+    private void deleteAccident(String id) {
+        db.collection("Accidents").document(id)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("Delete", "DocumentSnapshot successfully deleted!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Delete", "Error deleting document", e);
+                    }
+                });
+    }
+
 
     public void pickLastAdd(){
         db.collection("cities")

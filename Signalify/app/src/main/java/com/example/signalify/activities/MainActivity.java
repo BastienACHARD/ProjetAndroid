@@ -179,14 +179,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             }
         });
 
-        //create a new item to draw on the map
-        //your items
-        //OverlayItem home = new OverlayItem("F. Rallo", "nos bureaux", new GeoPoint(43.65020,7.00517));
-        //Drawable m = home.getMarker(0);
-        //items.put("1",home); // Lat/Lon decimal degrees
-        // items.add(new OverlayItem("Resto", "chez babar", new GeoPoint(43.64950,7.00517))); // Lat/Lon decimal degrees
-        //items.put("1",new OverlayItem("Ajout", "chez Lemuel", new GeoPoint(43.64850,7.00517)));
-        //the Place icons on the map with a click listener
         new AccessAccidents().allAccidents(new AccessAccidents.MyCallback() {
             @Override
             public void onCallback(HashMap<String, Accident> accidentsList) {
@@ -245,42 +237,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     }
 
 
-
-    private void subscribeToTheToken() {
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if(!task.isSuccessful()) {
-                            Log.w("TAG", "getInstanceId failed", task.getException());
-                            return;
-                        }
-
-                        String token = task.getResult().getToken();
-
-                        //String msg = getString(R.string.msg_token_fmt, token);
-                        Log.d("TAG", "Token : "+token);
-                        Toast.makeText(MainActivity.this, "Token : "+token, Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-    }
-
-    private void subscribeToNotificationService() {
-        FirebaseMessaging.getInstance().subscribeToTopic("Lemuel")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
-                            Toast.makeText(MainActivity.this, "Souscription Avec Success !!!",Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(MainActivity.this, "Souscription Echouée !!!",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
-
-
     private void addMaker(GeoPoint startPoint) {
         startMarker = new Marker(map);
         startMarker.setPosition(startPoint);
@@ -312,13 +268,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     }
 
     public void addAccidentMarker(String type,GeoPoint geoPoint) {
-        Marker pointMarker = new Marker(map);
-        //pointMarker.setPosition(geoPoint);
-        //pointMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-        //pointMarker.setIcon(getResources().getDrawable(R.mipmap.ic_lo));
-        //map.getOverlays().add(pointMarker);
-        map.invalidate();
-
         Marker m = new Marker(map);
         m.setPosition(geoPoint);
         m.setTextLabelBackgroundColor(
@@ -445,10 +394,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     public void onLocationChanged(Location location) {
         GeoPoint center = new GeoPoint(location.getLatitude(), location.getLongitude());
         myLocation = center;
-        //mapController.animateTo(center);
-        //startMarker.setPosition(myLocation);
-        //String accidentKey = checkProximity(myLocation);
-         //if( accidentKey != null) generateNotification(accidentKey);
+        mapController.animateTo(center);
+        startMarker.setPosition(myLocation);
+        String accidentKey = checkProximity(myLocation);
+         if( accidentKey != null) showActionButtonsNotification(accidentKey);
        // Log.d("CHANGE","Changement");
     }
 
@@ -479,21 +428,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             }
         }
         return null;
-    }
-
-    public void generateNotifiction(String accidentKey){
-        Intent intent=new Intent(getApplicationContext(), ShowDetailActivity.class);
-        intent.putExtra("code", accidentKey);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);
-        NotificationCompat.Builder notification=new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
-                .setSmallIcon(R.drawable.alarm)
-                .setContentTitle(" Vous êtes proche d'un accident !")
-                .setContentText(" Vous êtes à 100 Mètres d'un accident. Cliquez pour en savoir plus.")
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true);
-
-        NotificationManagerCompat.from(this).notify(++id,notification.build());
     }
 
     private Intent getNotificationIntent(){
