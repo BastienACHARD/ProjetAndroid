@@ -453,7 +453,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         Notification notification = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
                 .setContentIntent(pendingIntent)
                 .setSmallIcon(R.drawable.alarm)
-                .setTimeoutAfter(10000)
+                .setTimeoutAfter(100000)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentTitle("Vous êtes proche d'un accident !")
                 .setContentText(" Vous êtes à 100 Mètres d'un accident.")
