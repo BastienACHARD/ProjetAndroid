@@ -153,7 +153,9 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
         valid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if(description.getText().toString().equals(""))
+                    noNull();
+                else
                 callDialog();
                 //finish();
             }
@@ -164,9 +166,10 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+              //  sendNotificationChannelNormal("Un nouvel incident a été déclaré.", "Cliquez pour plus d'informations sur l'accident.", Notifications.CHANNEL_ID, NotificationCompat.PRIORITY_HIGH);
 
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
+                  Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                  startActivity(intent);
               //  finish();
             }
         });
@@ -254,6 +257,23 @@ public class AddAccidentActivity extends AppCompatActivity implements LocationLi
             }
         });
         confirm.show();
+
+    }
+
+    public void noNull()
+    {
+        AlertDialog confirm = new AlertDialog.Builder(this).create();
+        confirm.setTitle("Champ requis");
+        confirm.setMessage("Veuillez renseigner tous les champs");
+        confirm.setButton(AlertDialog.BUTTON_POSITIVE, "Ok", new AlertDialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        confirm.show();
+
 
     }
 
