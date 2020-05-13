@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".PictureFragment">
+    tools:context=".fragments.PictureFragment">
 
     <ImageView
         android:id="@+id/imageView"

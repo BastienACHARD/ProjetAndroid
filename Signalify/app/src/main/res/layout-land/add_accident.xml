@@ -8,9 +8,11 @@
     android:layout_height="match_parent">
 
 
+
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="217dp"
+        android:layout_height="wrap_content"
         android:layout_weight="8"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -18,7 +20,7 @@
 
         <Spinner
             android:id="@+id/spiner"
-            android:layout_width="wrap_content"
+            android:layout_width="180dp"
             android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
@@ -27,28 +29,28 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="173dp">
+            android:layout_height="67dp">
 
             <MultiAutoCompleteTextView
                 android:id="@+id/multiAutoCompleteTextView"
                 android:layout_width="match_parent"
-                android:layout_height="141dp"
-                android:layout_gravity="bottom"
+                android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
+                android:gravity="start"
                 android:hint="Rédiger votre commentaire ici..."
-                android:textSize="20sp" />
+                android:textSize="24sp" />
 
             <ImageButton
                 android:id="@+id/voiceButton"
-                android:layout_width="63dp"
-                android:layout_height="57dp"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="59dp"
                 android:src="@drawable/ic_mic_black_24dp" />
+
         </LinearLayout>
+
     </LinearLayout>
+
    <LinearLayout
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
@@ -57,7 +59,7 @@
        <ImageView
            android:id="@+id/picture"
            android:layout_width="match_parent"
-           android:layout_height="258dp"
+           android:layout_height="116dp"
            android:src="@drawable/camera" />
    </LinearLayout>
 
@@ -86,10 +88,11 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
+
         <Button
             android:id="@+id/cancel"
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:background="@drawable/button_red"
@@ -100,7 +103,7 @@
         <Button
             android:id="@+id/valid"
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:background="@drawable/button_green"

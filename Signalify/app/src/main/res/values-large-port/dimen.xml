@@ -36,7 +36,7 @@
     <dimen name="item_width">800dp</dimen>
 
              <!-- Fragment description -->
-    <dimen name="frag_description_margin">5dp</dimen>
+    <dimen name="frag_description_margin">35dp</dimen>
     <dimen name="btn_add_margin_left_right">15dp</dimen>
     <dimen name="btn_call_width">50dp</dimen>
 
